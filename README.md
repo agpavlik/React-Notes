@@ -1,15 +1,15 @@
 ## React
 
-- [What is React](#WhatisReact)
-- [Components](#Components)
-- [JSX](#JSX)
-- [Props](#Props)
-  - [Rendering List](#RenderingList)
-  - [Conditional Rendering With &&](#ConditionalRenderingWith&&)
-  - [Conditional Rendering With Ternaries](#ConditionalRenderingWithTernaries)
-  - [Conditional Rendering With Multiple Returns](#4)
+- [What is React](#1)
+- [Components](#2)
+- [JSX](#3)
+- [Props](#4)
+  - [Rendering List](#5)
+  - [Conditional Rendering With &&](#6)
+  - [Conditional Rendering With Ternaries](#7)
+  - [Conditional Rendering With Multiple Returns](#8)
 
-### What is React
+### What is React <a name="1"></a>
 
 `React` – extremely popular declarative, component-based, state-driven JavaScript library for building user interfaces, created by Facebook.
 
@@ -20,12 +20,12 @@
 There are several options and freamworks to work with React (Vite, Next.js, Remix, etc.)
 ![](1.png)
 
-### Components
+### Components <a name="2"></a>
 
 React applications are entirely made out of components. We build complex UIs by building multiple components and combining them. Components can be reused, nested inside each other, and pass data between them.
 ![](2.png)
 
-### JSX
+### JSX <a name="3"></a>
 
 Components must return a block of JSX. `Extension of JavaScript` that allows us to
 embed JavaScript, CSS, and React components into HTML. Each JSX element is converted to a `React.createElement` function call.
@@ -33,12 +33,12 @@ embed JavaScript, CSS, and React components into HTML. Each JSX element is conve
 ![](4.png)
 ![](5.png)
 
-### Props
+### Props <a name="4"></a>
 
 `Props` like a chain or communication chanel between a parent and a child components. Props are used to pass data from parent components to child components (down the component tree). With props, parent components control how child components look and work. This one-way date flow makes applications more predictable and easier to understand, easier to debug. Anything can be passed as props: single value, arrays, objects, functions, even other components.
 So, props is data coming from the outside, and can only be updated by the parent component. Props are read-only, they are immutable! This is one of React’s strict rules. If you need to mutate props, you actually need state.
 
-#### 🚩 Rendering List
+#### 🚩 Rendering List <a name="5"></a>
 
 For rendering usualy used `.map` which allows to loop through array and create a brand new array.
 
@@ -102,7 +102,7 @@ function Pizza(props) {
 }
 ```
 
-#### 🚩 Conditional Rendering With &&
+#### 🚩 Conditional Rendering With && <a name="6"></a>
 
 ```javascript
 function Footer() {
@@ -127,7 +127,7 @@ function Footer() {
 }
 ```
 
-#### 🚩 Conditional Rendering With Ternaries
+#### 🚩 Conditional Rendering With Ternaries <a name="7"></a>
 
 ```javascript
 function Footer() {
@@ -156,7 +156,7 @@ function Footer() {
 }
 ```
 
-#### 🚩 Conditional Rendering With Multiple Returns <a name="4"></a>
+#### 🚩 Conditional Rendering With Multiple Returns <a name="8"></a>
 
 ```javascript
 function Footer() {
