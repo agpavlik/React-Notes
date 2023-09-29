@@ -1,6 +1,13 @@
 ## React
 
+- [What is React](#What_is_React)
+- [Components](#Components)
 - [JSX](#JSX)
+- [Props](#Props)
+  - [Rendering List](#Rendering_List)
+  - [Conditional Rendering With &&](#Conditional_Rendering_With_&&)
+  - [Conditional Rendering With Ternaries](#Conditional_Rendering_With_Ternaries)
+  - [Conditional Rendering With Multiple Returns](#Conditional_Rendering_With_Multiple_Returns)
 
 ### What is React
 
@@ -157,6 +164,14 @@ function Footer() {
   const openHour = 12;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
+
+  if (!isOpen) {
+    return (
+      <footer className="footer">
+        <p>CLOSED</p>
+      </footer>
+    );
+  }
 
   return (
     <footer className="footer">
