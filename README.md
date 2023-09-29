@@ -7,7 +7,7 @@
   - [Rendering List](#RenderingList)
   - [Conditional Rendering With &&](#ConditionalRenderingWith&&)
   - [Conditional Rendering With Ternaries](#ConditionalRenderingWithTernaries)
-  - [Conditional Rendering With Multiple Returns](#ConditionalRenderingWithMultipleReturns)
+  - [Conditional Rendering With Multiple Returns](#4)
 
 ### What is React
 
@@ -156,7 +156,7 @@ function Footer() {
 }
 ```
 
-#### 🚩 Conditional_Rendering_With_Multiple_Returns
+#### 🚩 Conditional Rendering With Multiple Returns <a name="4"></a>
 
 ```javascript
 function Footer() {
