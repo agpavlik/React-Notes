@@ -1,13 +1,13 @@
 ## React
 
-- [What is React](#What_is_React)
+- [What is React](#WhatisReact)
 - [Components](#Components)
 - [JSX](#JSX)
 - [Props](#Props)
-  - [Rendering List](#Rendering_List)
-  - [Conditional Rendering With &&](#Conditional_Rendering_With_&&)
-  - [Conditional Rendering With Ternaries](#Conditional_Rendering_With_Ternaries)
-  - [Conditional Rendering With Multiple Returns](#Conditional_Rendering_With_Multiple_Returns)
+  - [Rendering List](#RenderingList)
+  - [Conditional Rendering With &&](#ConditionalRenderingWith&&)
+  - [Conditional Rendering With Ternaries](#ConditionalRenderingWithTernaries)
+  - [Conditional Rendering With Multiple Returns](#ConditionalRenderingWithMultipleReturns)
 
 ### What is React
 
