@@ -192,3 +192,5 @@ function Footer() {
   );
 }
 ```
+
+#### 🚩 Handling events in React<a name="9"></a>
