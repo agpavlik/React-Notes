@@ -9,6 +9,8 @@
   - [Conditional Rendering With Ternaries](#7)
   - [Conditional Rendering With Multiple Returns](#8)
 - [State](#9)
+  - [useState examples with buttons](#10)
+  -
 
 ### What is React <a name="1"></a>
 
@@ -208,4 +210,81 @@ Practical guideline about state
 - When building a component, imagine its view as a reflection of state changing over time.
 - For data that should not trigger component re-render, don’t use state. Use a regular variable instead.
 
-#### 🚩 Handling events in React<a name="10"></a>
+![](6.png)
+
+`useState` implementation:
+
+- add new state variable
+- use state variable in the code
+- update piace of state in some event handler function
+
+#### 🚩 useState examples with buttons <a name="10"></a>
+
+Example - [Udemy-step](https://github.com/agpavlik/Udemy-step)
+
+```javascript
+import { useState } from "react"; // import useState function from react
+
+const messages = [
+  "Learn React ⚛️",
+  "Apply for jobs 💼",
+  "Invest your new income 🤑",
+];
+
+export default function App() {
+  const [step, setStep] = useState(1); // add new state variable
+  const [isOpen, setIsOpen] = useState(true);
+
+  function handlePrevious() {
+    if (step > 1) setStep((s) => s - 1); //update piace of state in event handler function. Callback function is used to update state based on the current value of this state
+  }
+  function handleNext() {
+    if (step < 3) setStep(step + 1); //update piace of state in event handler function
+  }
+
+  return (
+    <>
+      <button
+        className="close"
+        onClick={() => setIsOpen(!isOpen)} // function created in-line instead of creating handle function out
+      >
+        &times;
+      </button>
+      {isOpen && (
+        <div className="steps">
+          <div className="numbers">
+            <div className={step >= 1 ? "active" : ""}>1</div>
+            <div className={step >= 2 ? "active" : ""}>2</div>
+            <div className={step >= 3 ? "active" : ""}>3</div>
+          </div>
+          <p className="message">
+            Step {step}: {messages[step - 1]}
+          </p>
+          <div className="buttons">
+            <button
+              style={{ backgroundColor: "#7950f2", color: "#fff" }}
+              onClick={handlePrevious} // event handler
+            >
+              Previous
+            </button>
+            <button
+              style={{ backgroundColor: "#7950f2", color: "#fff" }}
+              onClick={handleNext} // event handler
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+```
+
+#### 🚩 useState examples with buttons <a name="10"></a>
+
+#### 🚩 useState examples with buttons <a name="10"></a>
+
+#### 🚩 useState examples with buttons <a name="10"></a>
+
+#### 🚩 useState examples with buttons <a name="10"></a>
