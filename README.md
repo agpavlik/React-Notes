@@ -8,6 +8,7 @@
   - [Conditional Rendering With &&](#6)
   - [Conditional Rendering With Ternaries](#7)
   - [Conditional Rendering With Multiple Returns](#8)
+- [State](#9)
 
 ### What is React <a name="1"></a>
 
@@ -193,4 +194,18 @@ function Footer() {
 }
 ```
 
-#### 🚩 Handling events in React<a name="9"></a>
+### State <a name="9"></a>
+
+`State` is the most important concept in React. `State` is a “component’s memory”.
+`State` is internal data that can be updated by the components logic. Data that a component can hold over time, necessary for information that it needs to remember throughout the app’s lifecycle. Updating component state triggers React to re-render the component.
+In React, a view is updated by re-rendering the component.
+
+Practical guideline about state
+
+- Use a state variable for any data that the component should keep track of over time. This is data that will change at some point.
+- Whenever you want something in the component to be dynamic,create a piece of state related to that “thing”, and update the state when the “thing” should change.
+- If you want to change the way a component looks, or the data it displays, update its state. This usually happens in an event handler function.
+- When building a component, imagine its view as a reflection of state changing over time.
+- For data that should not trigger component re-render, don’t use state. Use a regular variable instead.
+
+#### 🚩 Handling events in React<a name="10"></a>
