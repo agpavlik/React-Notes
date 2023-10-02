@@ -41,6 +41,8 @@ embed JavaScript, CSS, and React components into HTML. Each JSX element is conve
 `Props` like a chain or communication chanel between a parent and a child components. Props are used to pass data from parent components to child components (down the component tree). With props, parent components control how child components look and work. This one-way date flow makes applications more predictable and easier to understand, easier to debug. Anything can be passed as props: single value, arrays, objects, functions, even other components.
 So, props is data coming from the outside, and can only be updated by the parent component. Props are read-only, they are immutable! This is one of React’s strict rules. If you need to mutate props, you actually need state.
 
+---
+
 #### 🚩 Rendering List <a name="5"></a>
 
 For rendering usualy used `.map` which allows to loop through array and create a brand new array.
@@ -105,6 +107,8 @@ function Pizza(props) {
 }
 ```
 
+---
+
 #### 🚩 Conditional Rendering With && <a name="6"></a>
 
 ```javascript
@@ -129,6 +133,8 @@ function Footer() {
   );
 }
 ```
+
+---
 
 #### 🚩 Conditional Rendering With Ternaries <a name="7"></a>
 
@@ -158,6 +164,11 @@ function Footer() {
   );
 }
 ```
+
+Also, ternary operator can be used to conditionaly set some style.<br>
+Example: `<span style={item.packed ? {textDecoration:"line-trough"}: {} }>`
+
+---
 
 #### 🚩 Conditional Rendering With Multiple Returns <a name="8"></a>
 
@@ -202,10 +213,12 @@ function Footer() {
 `State` is internal data that can be updated by the components logic. Data that a component can hold over time, necessary for information that it needs to remember throughout the app’s lifecycle. Updating component state triggers React to re-render the component.
 In React, a view is updated by re-rendering the component.
 
-Practical guideline about state
+Practical guideline about state:
 
-- Use a state variable for any data that the component should keep track of over time. This is data that will change at some point.
-- Whenever you want something in the component to be dynamic,create a piece of state related to that “thing”, and update the state when the “thing” should change.
+- Each component has and manages its own state, no matter how many times we render the same component;
+- Use a state variable for any data that the component should keep track of ("remember") over time. This is data that will change at some point.
+- Whenever you want something in the component to be dynamic,create a piece of state related to that “thing”, and update the state when the “thing” should change.<br>
+  Example: A modal window can be open or closed. So we create a state variable 'isOpen' that tracks whether the modal is open or not. On 'isOpen = true' we display the window, on 'isOpen = false' we hide it.
 - If you want to change the way a component looks, or the data it displays, update its state. This usually happens in an event handler function.
 - When building a component, imagine its view as a reflection of state changing over time.
 - For data that should not trigger component re-render, don’t use state. Use a regular variable instead.
@@ -217,6 +230,8 @@ Practical guideline about state
 - add new state variable
 - use state variable in the code
 - update piace of state in some event handler function
+
+`Updating State Based on Current State`: Callback function is used to update state based on the current value of this state.
 
 #### 🚩 useState examples with buttons <a name="10"></a>
 
