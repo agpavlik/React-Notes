@@ -1,4 +1,4 @@
-## React
+## ReactJS
 
 - [What is React](#1)
 - [Components](#2)
@@ -10,7 +10,11 @@
   - [Conditional Rendering With Multiple Returns](#8)
 - [State](#9)
   - [useState examples with buttons](#10)
+  - [useState examples with form](#11)
   -
+  -
+
+---
 
 ### What is React <a name="1"></a>
 
@@ -23,10 +27,14 @@
 There are several options and freamworks to work with React (Vite, Next.js, Remix, etc.)
 ![](1.png)
 
+---
+
 ### Components <a name="2"></a>
 
 React applications are entirely made out of components. We build complex UIs by building multiple components and combining them. Components can be reused, nested inside each other, and pass data between them.
 ![](2.png)
+
+---
 
 ### JSX <a name="3"></a>
 
@@ -35,6 +43,8 @@ embed JavaScript, CSS, and React components into HTML. Each JSX element is conve
 ![](3.png)
 ![](4.png)
 ![](5.png)
+
+---
 
 ### Props <a name="4"></a>
 
@@ -207,6 +217,8 @@ function Footer() {
 }
 ```
 
+---
+
 ### State <a name="9"></a>
 
 `State` is the most important concept in React. `State` is a “component’s memory”.
@@ -233,7 +245,9 @@ Practical guideline about state:
 
 `Updating State Based on Current State`: Callback function is used to update state based on the current value of this state.
 
-#### 🚩 useState examples with buttons <a name="10"></a>
+---
+
+#### 🚩 useState examples with button <a name="10"></a>
 
 Example - [Udemy-step](https://github.com/agpavlik/Udemy-step)
 
@@ -296,10 +310,165 @@ export default function App() {
 }
 ```
 
-#### 🚩 useState examples with buttons <a name="10"></a>
+Example - [Udemy-flashcards](https://github.com/agpavlik/Udemy-flashcards)
 
-#### 🚩 useState examples with buttons <a name="10"></a>
+```javascript
+const questions = [
+  {
+    id: 3457,
+    question: "What language is React based on?",
+    answer: "JavaScript",
+  },
+  {
+    id: 7336,
+    question: "What are the building blocks of React apps?",
+    answer: "Components",
+  },
+];
 
-#### 🚩 useState examples with buttons <a name="10"></a>
+function FlashCards() {
+  const [selectedId, setSelectedId] = useState(null);
 
-#### 🚩 useState examples with buttons <a name="10"></a>
+  function handleClick(id) {
+    setSelectedId(id !== selectedId ? id : null);
+  }
+
+  return (
+    <div className="flashcards">
+      {questions.map((question) => (
+        <div
+          key={question.id}
+          onClick={() => handleClick(question.id)}
+          className={question.id === selectedId ? "selected" : ""}
+        >
+          <p>
+            {question.id === selectedId ? question.answer : question.question}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+#### 🚩 useState examples with form <a name="11"></a>
+
+Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
+
+```javascript
+import { useState } from "react";
+
+export default function Form({ onAddItems }) {
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  function handleSubmit(e) {
+    e.preventDefault(); // Page not to reload. thia disavbled its default behaviour of HTML.
+    if (!description) return; // we should been able to submit the form without description
+
+    const newItem = {
+      description,
+      quantity,
+      packed: false,
+      id: Date.now(),
+    };
+
+    onAddItems(newItem);
+
+    setDescription(""); //after submition form should back to the initial state
+    setQuantity(1); //after submition form should back to the initial state
+  }
+
+  // Trick for selector. Create an empty array with 20 elements. Than pass a function with two elements (value and index) and will receive an array with numbers from 1 to 20. Than loop with map method over this array to create a list of elements.
+
+  // e.target.value is always a string, therefore we use Number to convert it to number.
+  return (
+    <form className="add-form" onSubmit={handleSubmit}>
+      <h3>What do you need for your trip?</h3>
+      <select
+        value={quantity}
+        onChange={(e) => setQuantity(Number(e.target.value))}
+      >
+        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
+          <option value={num} key={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="Item..."
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+
+      <button>Add</button>
+    </form>
+  );
+}
+```
+
+Example - [Udemy-eat-n-split](https://github.com/agpavlik/Udemy-eat-n-split)
+
+```javascript
+export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
+
+  function handleAddFriend(friend) {
+    setFriends((friends) => [...friends, friend]);
+    setShowAddFriend(false);
+  }
+
+  return (
+    <div className="app">
+      <FormAddFriend onAddFriend={handleAddFriend} />
+    </div>
+  );
+}
+
+function FormAddFriend({ onAddFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!name || !image) return;
+
+    const id = crypto.randomUUID();
+    const newFriend = { name, image: `${image}?=${id}`, balance: 0, id };
+    onAddFriend(newFriend);
+
+    setName("");
+    setImage("https://i.pravatar.cc/48");
+  }
+
+  return (
+    <form className="form-add-friend" onSubmit={handleSubmit}>
+      <label> Friend name </label>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <label> Image URL </label>
+      <input
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
+
+      <Button>Add</Button>
+    </form>
+  );
+}
+```
+
+#### 🚩 useState examples with buttons <a name="12"></a>
+
+#### 🚩 useState examples with buttons <a name="13"></a>
+
+#### 🚩 useState examples with buttons <a name="14"></a>
