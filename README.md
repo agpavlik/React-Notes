@@ -10,9 +10,11 @@
   - [Conditional Rendering With Multiple Returns](#8)
 - [State](#9)
   - [useState examples with buttons](#10)
-  - [useState examples with form](#11)
+  - [useState examples with form and selector](#11)
+  - [useState examples with delete item and clear list](#12)
   -
   -
+- [State Management](#15)
 
 ---
 
@@ -360,9 +362,14 @@ Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
 ```javascript
 import { useState } from "react";
 
-export default function Form({ onAddItems }) {
+export default function Form() {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [items, setItems] = useState([]);
+
+  function handleAddItems(item) {
+    setItems((items) => [...items, item]); //add a new item into existing array
+  }
 
   function handleSubmit(e) {
     e.preventDefault(); // Page not to reload. thia disavbled its default behaviour of HTML.
@@ -375,7 +382,7 @@ export default function Form({ onAddItems }) {
       id: Date.now(),
     };
 
-    onAddItems(newItem);
+    handleAddItems(newItem);
 
     setDescription(""); //after submition form should back to the initial state
     setQuantity(1); //after submition form should back to the initial state
@@ -467,8 +474,92 @@ function FormAddFriend({ onAddFriend }) {
 }
 ```
 
-#### 🚩 useState examples with buttons <a name="12"></a>
+---
+
+#### 🚩 useState examples with delete item and clear list<a name="12"></a>
+
+Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
+
+```javascript
+export default function App() {
+  const [items, setItems] = useState([]);
+
+  function handleDeleteItem(id) {
+    setItems((items) => items.filter((item) => item.id !== id)); // delete item with the exact id. Filter create a new array without the exact id.
+  }
+
+  function handleClearList() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all items?"
+    );
+    if (confirmed) setItems([]);
+  }
+
+  return (
+    <div>
+      <PackingList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onToggleItem={handleToggleItem}
+        onClearList={handleClearList}
+      />
+    </div>
+  );
+}
+
+function PackingList({ items, onDeleteItem, onToggleItem, onClearList }) {
+  return (
+    <div className="list">
+      <ul>
+        {sortedItems.map((item) => (
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItem={onDeleteItem}
+            onToggleItem={onToggleItem}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+//create a function in onClick in order to receive just an item.id, but not a whole event
+function Item({ item, onDeleteItem, onToggleItem }) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => onToggleItem(item.id)}
+      />
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
+        {item.quantity} {item.description}
+      </span>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
+    </li>
+  );
+}
+```
 
 #### 🚩 useState examples with buttons <a name="13"></a>
 
 #### 🚩 useState examples with buttons <a name="14"></a>
+
+---
+
+### State Management <a name="15"></a>
+
+`State management`: Deciding when to create pieces of state, what types of state are necessary, where to place each piece of state, and how data flows trough app.
+![](7.png)
+![](8.png)
+![](9.png)
+
+`One-way data flow`: Means that data can only be passed from parents to children and never in opposite way. Also, data cannot flow sideways to siblings.
+
+`Lifting state up`: In order to share one piece of state with siblings it should be lifted up to the closest common parent.
+
+`Inverse data flow`: child-to-parent communication when child updating parent state.
+
+`Derived State`: state that is computed from an existing piece of state or form props.
+![](10.png)
