@@ -12,7 +12,7 @@
   - [useState examples with buttons](#10)
   - [useState examples with form and selector](#11)
   - [useState examples with delete item and clear list](#12)
-  -
+  - [useState example with checkbox](#12)
   -
 - [State Management](#15)
 
@@ -355,7 +355,7 @@ function FlashCards() {
 
 ---
 
-#### 🚩 useState examples with form <a name="11"></a>
+#### 🚩 useState examples with form and selector <a name="11"></a>
 
 Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
 
@@ -500,24 +500,18 @@ export default function App() {
       <PackingList
         items={items}
         onDeleteItem={handleDeleteItem}
-        onToggleItem={handleToggleItem}
         onClearList={handleClearList}
       />
     </div>
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggleItem, onClearList }) {
+function PackingList({ items, onDeleteItem, onClearList }) {
   return (
     <div className="list">
       <ul>
-        {sortedItems.map((item) => (
-          <Item
-            item={item}
-            key={item.id}
-            onDeleteItem={onDeleteItem}
-            onToggleItem={onToggleItem}
-          />
+        {items.map((item) => (
+          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
         ))}
       </ul>
     </div>
@@ -525,7 +519,56 @@ function PackingList({ items, onDeleteItem, onToggleItem, onClearList }) {
 }
 
 //create a function in onClick in order to receive just an item.id, but not a whole event
-function Item({ item, onDeleteItem, onToggleItem }) {
+function Item({ item, onDeleteItem }) {
+  return (
+    <li>
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
+        {item.quantity} {item.description}
+      </span>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
+    </li>
+  );
+}
+```
+
+---
+
+#### 🚩 useState examples with checkbox <a name="13"></a>
+
+Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
+
+```javascript
+export default function App() {
+  const [items, setItems] = useState([]);
+
+  function handleToggleItem(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
+  return (
+    <div>
+      <PackingList items={items} onToggleItem={handleToggleItem} />
+    </div>
+  );
+}
+
+function PackingList({ items, onToggleItem }) {
+  return (
+    <div className="list">
+      <ul>
+        {items.map((item) => (
+          <Item item={item} key={item.id} onToggleItem={onToggleItem} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Item({ item, onToggleItem }) {
   return (
     <li>
       <input
@@ -536,13 +579,10 @@ function Item({ item, onDeleteItem, onToggleItem }) {
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 }
 ```
-
-#### 🚩 useState examples with buttons <a name="13"></a>
 
 #### 🚩 useState examples with buttons <a name="14"></a>
 
