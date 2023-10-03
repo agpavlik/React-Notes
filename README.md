@@ -12,11 +12,13 @@
   - [useState examples with buttons](#10)
   - [useState examples with form and selector](#11)
   - [useState examples with delete item and clear list](#12)
-  - [useState example with checkbox](#12)
-  -
-- [State Management](#15)
-
----
+  - [useState example with checkbox](#13)
+  - [useState example with sorting items](#14)
+- [State management](#15)
+  - [useState example with derived state ](#16)
+- [Children prop](#17)
+-
+- ***
 
 ### What is React <a name="1"></a>
 
@@ -514,11 +516,12 @@ function PackingList({ items, onDeleteItem, onClearList }) {
           <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
         ))}
       </ul>
+      <button onClick={onClearList}>Clear list</button>
     </div>
   );
 }
 
-//create a function in onClick in order to receive just an item.id, but not a whole event
+// Create a function in onClick in order to receive just an item.id, but not a whole event
 function Item({ item, onDeleteItem }) {
   return (
     <li>
@@ -546,7 +549,7 @@ export default function App() {
       items.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item
       )
-    );
+    ); // return the same array but with one object updated
   }
 
   return (
@@ -568,6 +571,7 @@ function PackingList({ items, onToggleItem }) {
   );
 }
 
+// Create a function in onChange in order to change just one item, but not a whole event
 function Item({ item, onToggleItem }) {
   return (
     <li>
@@ -584,7 +588,47 @@ function Item({ item, onToggleItem }) {
 }
 ```
 
-#### 🚩 useState examples with buttons <a name="14"></a>
+---
+
+#### 🚩 useState examples with sorting items <a name="14"></a>
+
+Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
+
+```javascript
+export default function PackingList({ items }) {
+  const [sortBy, setSortBy] = useState("input"); // by default will be the first value
+
+  let sortedItems;
+
+  if (sortBy === "input") sortedItems = items;
+  if (sortBy === "description")
+    sortedItems = items
+      .slice() //a copy of an array
+      .sort((a, b) => a.description.localeCompare(b.description));
+  if (sortBy === "packed")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+
+  return (
+    <div className="list">
+      <ul>
+        {sortedItems.map((item) => (
+          <Item item={item} key={item.id} />
+        ))}
+      </ul>
+
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">Sorts by input order</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+      </div>
+    </div>
+  );
+}
+```
 
 ---
 
@@ -600,6 +644,42 @@ function Item({ item, onToggleItem }) {
 `Lifting state up`: In order to share one piece of state with siblings it should be lifted up to the closest common parent.
 
 `Inverse data flow`: child-to-parent communication when child updating parent state.
+![](10.png)
 
 `Derived State`: state that is computed from an existing piece of state or form props.
-![](10.png)
+![](11.png)
+
+---
+
+#### 🚩 useState examples with derived state <a name="16"></a>
+
+Example - [Udemy-far-away](https://github.com/agpavlik/Udemy-far-away)
+
+```javascript
+export default function Stats({ items }) {
+  const [items, setItems] = useState([]);
+
+  if (!items.length)
+    return (
+      <p className="stats">
+        <em>Start adding some items to your packing list </em>
+      </p>
+    );
+  const numItems = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+  const percentage = Math.round((numPacked / numItems) * 100);
+
+  return (
+    <footer className="stats">
+      <em>
+        {percentage === 100
+          ? "You got everything! Ready to go ✈️"
+          : `You have ${numItems} items on your list, and you have already packed
+        ${numPacked} (${percentage}%)`}
+      </em>
+    </footer>
+  );
+}
+```
+
+---
