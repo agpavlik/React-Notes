@@ -18,6 +18,9 @@
   - [useState example with derived state ](#16)
 - [Children prop](#17)
 - [Split a UI into components](#18)
+- [Component composition](#19)
+-
+-
 -
 - ***
 
@@ -904,3 +907,80 @@ We use composition for two reasons:
 2. Fix prop drilling (great for layouts)
 
 ![](16.png)
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+Examle with using the children:
+
+```javascript
+// before
+export default function App() {
+  const { movies, setMovies} = useState(tempMovieData);
+
+  return (
+    <>
+      <NavBar movies={movies} />
+      <Main movies={movies} />
+  )
+}
+
+function NavBar({ movies }) {
+  return <nav className="nav-bar">
+    <Logo />
+    <Search />
+    <NumResults movies={movies}>
+  </nav>;
+}
+```
+
+```javascript
+// after using component composition
+// prop drilling has been eliminated
+export default function App() {
+  const { movies, setMovies} = useState(tempMovieData);
+
+  return (
+    <>
+      <NavBar>
+        <Logo />
+        <Search />
+        <NumResults movies={movies}>
+      </NavBar>
+      <Main movies={movies} />
+  )
+}
+
+function NavBar({ children }) {
+  return <nav className="nav-bar">{children}</nav>;
+}
+```
+
+Example with using the explicit prop
+
+```javascript
+// before
+export default function App() {
+  return (
+    <Main>
+      <Box>
+        <MovieList movies={movies} />
+      </Box>
+    </Main>
+  );
+}
+
+function Box({ children }) {}
+```
+
+```javascript
+// after using the explicit prop
+export default function App() {
+  return (
+    <Main>
+      <Box element={<MovieList movies={movies} />} />
+    </Main>
+  );
+}
+
+function Box({ element }) {} // can be called anything
+```
