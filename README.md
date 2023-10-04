@@ -21,7 +21,7 @@
 - [Split a UI into components](#18)
 - [Component composition](#19)
 - [Styling variants](#21)
--
+- [Props as a Component API. PropTypes.](#22)
 -
 - ***
 
@@ -1033,3 +1033,73 @@ function Header() {
 ```
 
 ---
+
+### Props as a Component API. PropTypes.<a name="22"></a>
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+```javascript
+//provide default values for props
+export default function StarRating({
+  maxRating = 5,
+  color = "#c69603",
+  size = 34,
+  className = "",
+  messages = [],
+  defaultRating = 0,
+  onSetRating,
+}) {
+  const textStyle = {
+    lineHeight: "1",
+    margin: "0",
+    color: color,
+    size: `${size}px`,
+  };
+
+  return (
+    <div>
+      <div>
+        {Array.from({ length: maxRating }, (_, i) => (
+          <Star color={color} size={size} />
+        ))}
+      </div>
+
+      <p style={textStyle}>
+        {messages.length === maxRating ? "text 1" : "text 2"}
+      </p>
+    </div>
+  );
+}
+```
+
+With proptypes, we can specify the type of value that we expect the consumer of the component to pass in for each of the props. This days developers don't really do this anymore.
+First of all, import PropTypes object from proptypes package.
+
+```javascript
+import PropTypes from "prop-types";
+
+//type property name with lowercase 'p'
+StarRating.propTypes = {
+  maxRating: PropTypes.number,
+  color: PropTypes.string,
+  size: PropTypes.number,
+  messages: PropTypes.array,
+  className: PropTypes.string,
+  onSetRating: PropTypes.func,
+  defaultRating: PropTypes.number,
+};
+
+export default function StarRating({
+  maxRating = 5,
+  color = "#c69603",
+  size = 34,
+  className = "",
+  messages = [],
+  defaultRating = 0,
+  onSetRating,
+}) {return()}
+```
+
+---
+
+### Pr<a name="23"></a>
