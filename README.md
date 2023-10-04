@@ -17,7 +17,7 @@
 - [State management](#15)
   - [useState example with derived state ](#16)
 - [Children prop](#17)
--
+- [Split a UI into components](#18)
 -
 - ***
 
@@ -884,3 +884,23 @@ function Button({ textColor, bgColor, onClick, children }) {
 ```
 
 ---
+
+### Split a UI into components<a name="18"></a>
+
+![](12.png)
+![](13.png)
+![](14.png)
+![](15.png)
+
+---
+
+### Component composition<a name="19"></a>
+
+`Component composition`: combining different components using the
+children prop (or explicitly defined props)
+We use composition for two reasons:
+
+1. Create highly reusable and flexible components
+2. Fix prop drilling (great for layouts)
+
+![](16.png)
