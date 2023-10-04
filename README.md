@@ -18,6 +18,7 @@
   - [useState example with derived state ](#16)
 - [Children prop](#17)
 -
+-
 - ***
 
 ### What is React <a name="1"></a>
@@ -476,6 +477,83 @@ function FormAddFriend({ onAddFriend }) {
 }
 ```
 
+Example - [Udemy-tip-calculator](https://github.com/agpavlik/Udemy-tip-calculator) - input
+
+```javascript
+export default function TipCalculator() {
+  const [bill, setBill] = useState("");
+
+  return (
+    <div>
+      <BillInput bill={bill} onSetBill={setBill} />
+    </div>
+  );
+}
+
+function BillInput({ bill, onSetBill }) {
+  return (
+    <div className="question">
+      <label> How much was the bill ?</label>
+      <input
+        className="input"
+        type="text"
+        placeholder="Bill value"
+        value={bill}
+        onChange={(e) => onSetBill(Number(e.target.value))}
+      ></input>
+    </div>
+  );
+}
+```
+
+Example - [Udemy-tip-calculator](https://github.com/agpavlik/Udemy-tip-calculator) - select
+
+```javascript
+export default function TipCalculator() {
+  const [bill, setBill] = useState("");
+  const [percentage1, setPercentage1] = useState(0);
+  const [percentage2, setPercentage2] = useState(0);
+
+  const tip = bill * ((percentage1 + percentage2) / 2 / 100);
+
+  function handleReset() {
+    setBill("");
+    setPercentage1(0);
+    setPercentage2(0);
+  }
+
+  return (
+    <div>
+      <BillInput bill={bill} onSetBill={setBill} />
+      <SelectPercentage percentage={percentage1} onSelect={setPercentage1}>
+        How did you like the service?
+      </SelectPercentage>
+      <SelectPercentage percentage={percentage2} onSelect={setPercentage2}>
+        How did your friend like the service?
+      </SelectPercentage>
+    </div>
+  );
+}
+
+function SelectPercentage({ children, onSelect, percentage }) {
+  return (
+    <div className="question">
+      <label>{children}</label>
+      <select
+        className="input"
+        value={percentage}
+        onChange={(e) => onSelect(Number(e.target.value))}
+      >
+        <option value="0">Dissatisfied (0%) </option>
+        <option value="5">It was okay (5%)</option>
+        <option value="10">It was good (10%)</option>
+        <option value="20">Abssolutely amazing! (20%)</option>
+      </select>
+    </div>
+  );
+}
+```
+
 ---
 
 #### 🚩 useState examples with delete item and clear list<a name="12"></a>
@@ -530,6 +608,40 @@ function Item({ item, onDeleteItem }) {
       </span>
       <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
+  );
+}
+```
+
+Example - [Udemy-tip-calculator](https://github.com/agpavlik/Udemy-tip-calculator) - reset
+
+```javascript
+export default function TipCalculator() {
+  const [bill, setBill] = useState("");
+
+  function handleReset() {
+    setBill("");
+    setPercentage1(0);
+    setPercentage2(0);
+  }
+
+  return (
+    <div>
+      <BillInput bill={bill} onSetBill={setBill} />
+      {bill > 0 && (
+        <>
+          <Output bill={bill} tip={tip} />
+          <Reset onReset={handleReset} />
+        </>
+      )}
+    </div>
+  );
+}
+
+function Reset({ onReset }) {
+  return (
+    <button className="btn" onClick={onReset}>
+      Reset
+    </button>
   );
 }
 ```
@@ -678,6 +790,95 @@ export default function Stats({ items }) {
         ${numPacked} (${percentage}%)`}
       </em>
     </footer>
+  );
+}
+```
+
+---
+
+### Children prop <a name="17"></a>
+
+When we include the button component in some JSX, instead of immediately closing the element, we can write some more JSX into that element. We can write anything that we want between the opening and the closing tag of the component that we are using.
+
+Example - [Udemy-step](https://github.com/agpavlik/Udemy-step)
+
+```javascript
+import { useState } from "react";
+
+const messages = [
+  "Learn React ⚛️",
+  "Apply for jobs 💼",
+  "Invest your new income 🤑",
+];
+
+export default function App() {
+  const [step, setStep] = useState(1);
+  const [isOpen, setIsOpen] = useState(true);
+
+  function handlePrevious() {
+    if (step > 1) setStep((s) => s - 1);
+  }
+  function handleNext() {
+    if (step < 3) setStep(step + 1);
+  }
+
+  return (
+    <>
+      <button className="close" onClick={() => setIsOpen(!isOpen)}>
+        &times;
+      </button>
+      {isOpen && (
+        <div className="steps">
+          <div className="numbers">
+            <div className={step >= 1 ? "active" : ""}>1</div>
+            <div className={step >= 2 ? "active" : ""}>2</div>
+            <div className={step >= 3 ? "active" : ""}>3</div>
+          </div>
+
+          <StepMessage step={step}>
+            {messages[step - 1]}
+            <div className="buttons">
+              <Button
+                bgColor="#c7c7c7"
+                textColor="#333"
+                onClick={() => alert(`Learn how to ${messages[step - 1]}`)}
+              >
+                Lern how
+              </Button>
+            </div>
+          </StepMessage>
+
+          <div className="buttons">
+            <Button bgColor="#7950f2" textColor="#fff" onClick={handlePrevious}>
+              <span>👈</span> Previous
+            </Button>
+            <Button bgColor="#7950f2" textColor="#fff" onClick={handleNext}>
+              Next <span>👉</span>
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function StepMessage({ step, children }) {
+  return (
+    <div className="message">
+      <h3>Step {step}</h3>
+      {children}
+    </div>
+  );
+}
+
+function Button({ textColor, bgColor, onClick, children }) {
+  return (
+    <button
+      style={{ backgroundColor: bgColor, color: textColor }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
 ```
