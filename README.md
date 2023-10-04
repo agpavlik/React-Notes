@@ -14,12 +14,13 @@
   - [useState examples with delete item and clear list](#12)
   - [useState example with checkbox](#13)
   - [useState example with sorting items](#14)
+  - [useState example with open/close button](#20)
 - [State management](#15)
   - [useState example with derived state ](#16)
 - [Children prop](#17)
 - [Split a UI into components](#18)
 - [Component composition](#19)
--
+- [Styling variants](#21)
 -
 -
 - ***
@@ -747,6 +748,27 @@ export default function PackingList({ items }) {
 
 ---
 
+#### useState example with open/close button <a name="20"></a>
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+```javascript
+function Box({ children }) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div className="box">
+      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
+        {isOpen ? "–" : "+"}
+      </button>
+      {isOpen && children}
+    </div>
+  );
+}
+```
+
+---
+
 ### State Management <a name="15"></a>
 
 `State management`: Deciding when to create pieces of state, what types of state are necessary, where to place each piece of state, and how data flows trough app.
@@ -984,3 +1006,30 @@ export default function App() {
 
 function Box({ element }) {} // can be called anything
 ```
+
+---
+
+### Styling variants <a name="21"></a>
+
+Variant 1
+
+```javascript
+function Header() {
+  return (
+    <h1
+      style={{ color: "red", fontSize: "48px", tetxTransform: "uppercase" }}
+    />
+  );
+}
+```
+
+Variant 2
+
+```javascript
+function Header() {
+  const style = { color: "red", fontSize: "48px", tetxTransform: "uppercase" };
+  return <h1 style={style} />;
+}
+```
+
+---
