@@ -22,8 +22,10 @@
 - [Component composition](#19)
 - [Styling variants](#21)
 - [Props as a Component API. PropTypes.](#22)
+- [Components, Instances, and Elements](#23)
+- [Rendering](#24)
 -
-- ***
+-
 
 ### What is React <a name="1"></a>
 
@@ -1102,4 +1104,33 @@ export default function StarRating({
 
 ---
 
-### Pr<a name="23"></a>
+### Components, Instances, and Elements<a name="23"></a>
+
+Components are what we write in order to describe a piece of the user interface. And the component is just a regular JavaScript function, but it's a function that returns React elements. And we usually write these elements using the JSX syntax.
+So we can essentially think of a component as a blueprint or a template, that React then creates one or multiple component instances. So we can say that an instance is like the actual physical manifestation of a component living in our componentry.
+Now in practice, we many times just use the terms component and component instance interchangeably.
+React executes the code in each of these instances, each of them will return one or more React elements. A React element basically contains all the information that is necessary in order to create DOM elements.
+DOM Element (HTML) is a visual representation of the component instance in the browser.
+
+![](17.png)
+
+---
+
+### Rendering<a name="24"></a>
+
+![](18.png)
+![](19.png)
+![](20.png)
+![](21.png)
+`Virtual DOM` : Tree of all React elements created from all instances in the component tree.
+![](22.png)
+![](23.png)
+![](24.png)
+![](25.png)
+![](26.png)
+![](27.png)
+![](28.png)
+
+---
+
+### Key Prop<a name="25"></a>
