@@ -26,6 +26,7 @@
 - [Rendering](#24)
 - [Key Prop](#25)
 - [State Batching](#26)
+- [Events](#27)
 
 ---
 
@@ -39,6 +40,9 @@
 
 There are several options and freamworks to work with React (Vite, Next.js, Remix, etc.)
 ![](1.png)
+![](1-1.png)
+![](1-2.png)
+![](1-3.png)
 
 ---
 
@@ -1150,3 +1154,14 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 ---
 
 ### State Batching<a name="26"></a>
+
+![](36.png)
+How these three pieces of state are actually updated behind the scenes? So we might think that, as React sees the set answer function call, it would update the state to the empty string as requested, and then trigger a re-render, and the commit phase,then it would move on to the next line, and to the same thing again,and finally do the entire thing one more time for the third state update. Intuitively, we would think that, if there are three state variables being updated in this event handler,then React would re-render three times. However, this is not how React updates multiple pieces of state in the same event handler function. Instead, these state updates will actually get batched into just one state update for the entire event handler. So updating multiple pieces of state won't immediately cause a re-render for each update. Instead, all pieces of state inside the event handler are updated in one go. They are batched, and only then React will trigger one single render and commit.
+And conceptually, it makes sense that React works this way,because if we're updating these pieces of state together, it probably means that they should just represent one new view, and therefore, React only updates the screen once.
+If these date updates belong together, it really wouldn't make much sense to update the screen three times.
+![](37.png)
+![](38.png)
+
+---
+
+### Events<a name="27"></a>
