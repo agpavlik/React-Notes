@@ -24,8 +24,10 @@
 - [Props as a Component API. PropTypes.](#22)
 - [Components, Instances, and Elements](#23)
 - [Rendering](#24)
--
--
+- [Key Prop](#25)
+- [State Batching](#26)
+
+---
 
 ### What is React <a name="1"></a>
 
@@ -1121,6 +1123,7 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 ![](18.png)
 ![](19.png)
 ![](20.png)
+`Reconciliation` is basically deciding exactly which DOM elements need to be inserted, deleted or updated in order to reflect the latest state changes. So the result of the reconciliation process is gonna be a list of DOM operations that are necessary to update the current DOM with a new state. Reconciliation is processed by a reconciler and we can say that the reconciler really is the engine of React. It's like the heart of React. The current reconciler in React is called `Fiber`. Fiber takes the entire React element tree (the virtual DOM), and based on it builds another tree which is the Fiber tree. The Fiber tree is a special internal tree where for each component instance and DOM element in the app, there is one so-called Fiber. What's special about this tree is that unlike React elements in the virtual DOM, Fibers are not recreated on every render. So, the Fiber tree is never destroyed. Instead, it's a mutable data structure and once it has been created during the initial render, it's simply mutated over and over again in future reconciliation steps. And this makes Fibers the perfect place for keeping track of things like the current component state, props, side effects, list of used hooks and more.
 ![](21.png)
 `Virtual DOM` : Tree of all React elements created from all instances in the component tree.
 ![](22.png)
@@ -1131,6 +1134,19 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 ![](27.png)
 ![](28.png)
 
+![](33.png)
+![](34.png)
+![](35.png)
+
 ---
 
 ### Key Prop<a name="25"></a>
+
+![](29.png)
+![](30.png)
+![](31.png)
+![](32.png)
+
+---
+
+### State Batching<a name="26"></a>
