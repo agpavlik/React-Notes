@@ -27,6 +27,7 @@
 - [Key Prop](#25)
 - [State Batching](#26)
 - [Events](#27)
+- [Effects and Data Fetching](#28)
 
 ---
 
@@ -1165,3 +1166,13 @@ If these date updates belong together, it really wouldn't make much sense to upd
 ---
 
 ### Events<a name="27"></a>
+
+![](39.png)
+Let's say that some event happens, like a click on one of the three buttons. As soon as the event fires, a new event object will be created, but it will not be created where the click
+actually happened. Instead, the object will be created at the root of the document, so at the very top of the tree. From there, the event will then travel down the entire tree during the so-called `capturing phase`, until it reaches the target element, on which the event was actually first triggered. Then immediately after the target element has been reached, the event object travels all the way back up the entire tree during the so-called `bubbling phase`.
+![](40.png)
+![](41.png)
+
+---
+
+### Effects and Data Fetching<a name="28"></a>
