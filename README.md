@@ -1192,6 +1192,7 @@ And so this is the reason why it is really not allowed to set state in render lo
 ```javascript
 export default function App() {
   const [movies, setMovies] = useState([]);
+
   fetch(`http://...`)
     .then((res) => res.json())
     .then((data) => setMovies(data.Search));
@@ -1203,6 +1204,7 @@ The idea of the `useEffect` hook is to give us a place where we can safely write
 ```javascript
 export default function App() {
   const [movies, setMovies] = useState([]);
+
   useEffect(function () {
     fetch(`http://...`)
       .then((res) => res.json())
@@ -1212,3 +1214,58 @@ export default function App() {
 ```
 
 So we used the useEffect hook to register an effect. Register means that we want this code here not to run as the component renders, but actually after it has been painted onto the screen.
+
+![](45.png)
+![](46.png)
+
+Many times when we need a lot of code to handle a promise, it's a lot easier and nicer to just have an async function.
+
+```javascript
+export default function App() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(function () {
+    async function fetchMovies(){
+      const res = await fetch(`http://...`)
+      const data = await res.json())
+      setMovies(data.Search)
+    }
+    fetchMovies();
+  }, []);
+}
+```
+
+```javascript
+// Add Loading indicator and error handling
+export default function App() {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading]=useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(function () {
+    async function fetchMovies(){
+      try {setIsLoading(true);
+        const res = await fetch(`http://...`)
+
+        if (!res.ok) throw new Error("Something went wrong with fetching movies")
+
+        const data = await res.json())
+
+        if (data.Responce === 'False') trow new Error ("Movie not found")
+
+        setMovies(data.Search)
+
+      } catch (err){
+        console.error(err.message)
+        setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchMovies();
+  }, []);
+}
+```
+
+![](47.png)
+![](48.png)
