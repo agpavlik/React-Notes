@@ -1244,7 +1244,10 @@ export default function App() {
 
   useEffect(function () {
     async function fetchMovies(){
-      try {setIsLoading(true);
+      try {
+        setIsLoading(true);
+        setError('') //reset error before start the fetching data
+
         const res = await fetch(`http://...`)
 
         if (!res.ok) throw new Error("Something went wrong with fetching movies")
@@ -1268,4 +1271,23 @@ export default function App() {
 ```
 
 ![](47.png)
+Without dependency array, React doesn't know when to run the effect.
 ![](48.png)
+![](49.png)
+![](50.png)
+![](51.png)
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+```javascript
+// Change the page title to the movie we currently watching
+useEffect(
+  function () {
+    if (!title) return;
+    document.tytle = `Movie | ${title}`;
+  },
+  [title]
+);
+```
+
+![](52.png)
