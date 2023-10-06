@@ -1270,12 +1270,10 @@ export default function App() {
 }
 ```
 
-![](47.png)
+#### Dependency Array
+
 Without dependency array, React doesn't know when to run the effect.
-![](48.png)
-![](49.png)
-![](50.png)
-![](51.png)
+![](47.png)
 
 Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
@@ -1289,5 +1287,14 @@ useEffect(
   [title]
 );
 ```
+
+#### UseEffect is a Synchronization Mechanism
+
+![](48.png)
+![](49.png)
+![](50.png)
+![](51.png)
+
+#### UseEffect Cleanup Function
 
 ![](52.png)
