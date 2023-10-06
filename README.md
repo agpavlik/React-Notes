@@ -27,7 +27,8 @@
 - [Key Prop](#25)
 - [State Batching](#26)
 - [Events](#27)
-- [Effects and Data Fetching](#28)
+  - [Practical implication](#28)
+- [Effects and Data Fetching](#29)
 
 ---
 
@@ -1175,4 +1176,39 @@ actually happened. Instead, the object will be created at the root of the docume
 
 ---
 
-### Effects and Data Fetching<a name="28"></a>
+### Practical implication <a name="28"></a>
+
+![](42.png)
+![](43.png)
+![](44.png)
+
+---
+
+### Effects and Data Fetching<a name="29"></a>
+
+If we use JS fetch function it will run an infinite number of requests, and it never really stops. So every second our app is firing off multiple fetch requests to the API, which of course is a really bad idea. The reason is that setting the state here in the render logic will then immediately cause the component to re-render itself again. However, as the component is re-rendered, the function here of course is executed again, which then will fetch again, which in turn will set the movies again as well. And then this whole thing starts over and over again.
+And so this is the reason why it is really not allowed to set state in render logic.
+
+```javascript
+export default function App() {
+  const [movies, setMovies] = useState([]);
+  fetch(`http://...`)
+    .then((res) => res.json())
+    .then((data) => setMovies(data.Search));
+}
+```
+
+The idea of the `useEffect` hook is to give us a place where we can safely write side effects like afforemention. Side effects registered with the useEffect hook will only be executed after certain renders. For example, only write after the initial render.
+
+```javascript
+export default function App() {
+  const [movies, setMovies] = useState([]);
+  useEffect(function () {
+    fetch(`http://...`)
+      .then((res) => res.json())
+      .then((data) => setMovies(data.Search));
+  }, []);
+}
+```
+
+So we used the useEffect hook to register an effect. Register means that we want this code here not to run as the component renders, but actually after it has been painted onto the screen.
