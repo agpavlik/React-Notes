@@ -29,7 +29,8 @@
 - [Events](#27)
   - [Practical implication](#28)
 - [Effects and Data Fetching](#29)
-  - [useEffect example with data fetching](#30)
+  - [useEffect example with keypress](#30)
+  - [useEffect example with data fetching](#31)
 
 ---
 
@@ -1302,6 +1303,7 @@ Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
 ```javascript
 // Change the page title back to the default with cleanup function
+
 useEffect(
   function () {
     if (!title) return;
@@ -1317,7 +1319,34 @@ useEffect(
 
 ---
 
-#### 🚩 useEffect example with data fetching<a name="30"></a>
+#### 🚩 useEffect example with keypress<a name="30"></a>
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+```javascript
+export default function App() {
+  const [selectedId, setSelectedId] = useState(null);
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
+
+  useEffect(
+    function () {
+      document.addEventListener("keydown", function (e) {
+        if (e.code === "Escape") {
+          handleCloseMovie();
+        }
+      });
+    },
+    [handleCloseMovie]
+  );
+}
+```
+
+---
+
+#### 🚩 useEffect example with data fetching<a name="31"></a>
 
 Example - [Udemy-currency-converter](https://github.com/agpavlik/Udemy-currency-converter)
 
