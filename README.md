@@ -31,8 +31,8 @@
 - [Effects and Data Fetching](#29)
   - [useEffect example with keypress](#30)
   - [useEffect example with data fetching](#31)
-
----
+- [Custom hooks](#32)
+- ***
 
 ### What is React <a name="1"></a>
 
@@ -265,6 +265,7 @@ Practical guideline about state:
 - update piace of state in some event handler function
 
 `Updating State Based on Current State`: Callback function is used to update state based on the current value of this state.
+![](6-1.png)
 
 ---
 
@@ -1404,3 +1405,37 @@ export default function App() {
   )
 }
 ```
+
+---
+
+### Custom hooks<a name="32"></a>
+
+`React hooks` are essentially special functions that are built into React and which allow us to hook into some of React's internal mechanisms, or in other words, hooks APIs that expose some internal React functionality, such as creating and accessing state from the fiber tree, or registering side effects in the fiber tree.
+The fiber tree is somewhere deep inside React and usually not accessible to us at all. But using the useState or the useEffect hook, we can essentially hook into that internal mechanism.
+What all hooks have in common is that they all start with the word "use," in order to make it easy for us, and for React to distinguish hooks from other regular functions. And in fact, we can even create our own so-called `custom hooks`.
+And this is actually one of the greatest things about hooks in general, because custom hooks give us developers an easy way of reusing non-visual logic.
+
+React actually comes with almost 20 built-in hooks:
+
+- useState,
+- useEffect,
+- useReducer,
+- useContext,
+- useRef,
+- useCallback,
+- useMemo,
+- useTransition,
+- useDeferredValue,
+- useLayoutEffect,
+- useDebugValue,
+- useImperativeHandle,
+- useId,
+- useSyncExternalStore,
+- useInsertionEffect.
+
+There are two rules of hooks that we must follow:
+
+- The first rule is that hooks can only be called at the top level. This means that we cannot call hooks inside conditionals, loops or functions nested inside the component. We can also not call hooks after an early return.
+- The second rule is that hooks can only be called from React functions. This means that hooks can only be called from function components or from custom hooks, but not from regular functions or even class components.
+
+These rules are automatically enforced by React’s ESLint.
