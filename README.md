@@ -33,7 +33,8 @@
   - [useEffect example with data fetching](#31)
   - [useEffect example with local storage](#33)
 - [useRef](#32)
-- [Custom hooks](#34)
+  - [useRef example with focus on the input](#34)
+- [Custom hooks](#35)
 - ***
 
 ### What is React <a name="1"></a>
@@ -1283,7 +1284,7 @@ Without dependency array, React doesn't know when to run the effect.
 Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
 ```javascript
-// Change the page title to the movie we currently watching
+// Change the page title with the movie title we currently watching
 useEffect(
   function () {
     if (!title) return;
@@ -1436,9 +1437,54 @@ const [watched, setWatched] = useState(function () {
 
 ### useRef <a name="32"></a>
 
+![](53.png)
+![](54.png)
+
 ---
 
-### Custom hooks<a name="34"></a>
+### useRef example with focus on the input <a name="34"></a>
+
+Using a ref with a DOM element happens in three steps. First of all, we create the useRef. Then we pass in the initial value that we want to be in that current property.
+Second step - come to the element that we want to select and to use the ref prop and then just pass in the ref that we just created.
+Third step - use the useEffect hook.
+
+```javascript
+function Search({ query, setQuery }) {
+  const inputEl = useRef(null); //1 step
+
+  use stored data in useRef
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Enter") {
+          if (document.activeElement === inputEl.current) return; // prevent to clean the form after rendering
+
+          inputEl.current.focus();
+          setQuery("");
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return () => document.addEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
+
+  return (
+    <input
+      className="search"
+      type="text"
+      placeholder="Search movies..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl} // 2 step
+    />
+  );
+}
+```
+
+---
+
+### Custom hooks<a name="35"></a>
 
 `React hooks` are essentially special functions that are built into React and which allow us to hook into some of React's internal mechanisms, or in other words, hooks APIs that expose some internal React functionality, such as creating and accessing state from the fiber tree, or registering side effects in the fiber tree.
 The fiber tree is somewhere deep inside React and usually not accessible to us at all. But using the useState or the useEffect hook, we can essentially hook into that internal mechanism.
