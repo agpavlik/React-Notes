@@ -31,7 +31,9 @@
 - [Effects and Data Fetching](#29)
   - [useEffect example with keypress](#30)
   - [useEffect example with data fetching](#31)
-- [Custom hooks](#32)
+  - [useEffect example with local storage](#33)
+- [useRef](#32)
+- [Custom hooks](#34)
 - ***
 
 ### What is React <a name="1"></a>
@@ -266,6 +268,7 @@ Practical guideline about state:
 
 `Updating State Based on Current State`: Callback function is used to update state based on the current value of this state.
 ![](6-1.png)
+Also, look at example - [useEffect example with local storage](#33)
 
 ---
 
@@ -1408,7 +1411,34 @@ export default function App() {
 
 ---
 
-### Custom hooks<a name="32"></a>
+#### 🚩 useEffect example with local storage<a name="33"></a>
+
+```javascript
+// part 1 - implement the local storage functionality
+
+const [watched, setWatched] = useState([]);
+
+useEffect(
+  function () {
+    localStorage.setItem("watched", JSON.stringify(watched)); // localstorage save key-value pair and value should be a string
+  },
+  [watched]
+);
+
+// part 2 - receive information from the local storage
+const [watched, setWatched] = useState(function () {
+  const storedValue = localStorage.getItem("watched");
+  return JSON.pars(storedValue); // convert back from string
+});
+```
+
+---
+
+### useRef <a name="32"></a>
+
+---
+
+### Custom hooks<a name="34"></a>
 
 `React hooks` are essentially special functions that are built into React and which allow us to hook into some of React's internal mechanisms, or in other words, hooks APIs that expose some internal React functionality, such as creating and accessing state from the fiber tree, or registering side effects in the fiber tree.
 The fiber tree is somewhere deep inside React and usually not accessible to us at all. But using the useState or the useEffect hook, we can essentially hook into that internal mechanism.
