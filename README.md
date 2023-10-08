@@ -34,7 +34,8 @@
   - [useEffect example with local storage](#33)
 - [useRef](#32)
   - [useRef example with focus on the input](#34)
-- [Custom hooks](#35)
+  - [useRef example with variable persisted across renders ](#35)
+- [Custom hooks](#36)
 - ***
 
 ### What is React <a name="1"></a>
@@ -1484,7 +1485,50 @@ function Search({ query, setQuery }) {
 
 ---
 
-### Custom hooks<a name="35"></a>
+### useRef example with variable persisted across renders <a name="35"></a>
+
+Let's now focus on the other use case of refs which give us a variable that is persisted across renders without triggering a re-render.
+
+```javascript
+function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
+  const [movie, setMovie] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
+
+  // store the amount of clicks rating after the movie was added
+  const countRef = useRef(0); // create ref where we want to store the amount of clicks
+  useEffect(
+    function () {
+      if (userRating) countRef.current += 1; //we would update the current property to simply adding one
+
+to simply adding one.
+    },
+    [userRating] // after every updating we collect it
+  );
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
+      countRatingDecisions: countRef.current, // used the countRef.current property whenever we create a new object to be added to our list.
+    };
+
+    onAddWatched(newWatchedMovie);
+
+    setAvgRating(Number(imdbRating));
+    setAvgRating((avgRating) => (avgRating + userRating) / 2);
+  }
+}
+```
+
+---
+
+### Custom hooks<a name="36"></a>
 
 `React hooks` are essentially special functions that are built into React and which allow us to hook into some of React's internal mechanisms, or in other words, hooks APIs that expose some internal React functionality, such as creating and accessing state from the fiber tree, or registering side effects in the fiber tree.
 The fiber tree is somewhere deep inside React and usually not accessible to us at all. But using the useState or the useEffect hook, we can essentially hook into that internal mechanism.
@@ -1515,3 +1559,14 @@ There are two rules of hooks that we must follow:
 - The second rule is that hooks can only be called from React functions. This means that hooks can only be called from function components or from custom hooks, but not from regular functions or even class components.
 
 These rules are automatically enforced by React’s ESLint.
+
+`Custom hooks` are all about reusability. In React, we have basically two types of things that we can reuse: a piece of UI or a piece of logic. If we want to reuse a piece of UI, we use a component. If you want to reuse logic in React, you first need to ask the question, does the logic that I want to reuse have any hooks? If not, all you need is a regular function, which can live either inside or outside of your component. However, if the logic does contain any React hook, you cannot just extract the logic into a regular function. Instead, what you need to create is a custom hook.
+
+`Custom hooks` allow us to reuse stateful logic among multiple components and actually not only stateful logic but really any logic that contains one or more React hooks. The idea is to make custom hooks reusable and portable so that you can even use them in completely different projects. And actually, now that we have had hooks for so many years in React, developers have started to share their custom hooks with the world. And so, there are now lots of custom hook libraries that you can download from NPM and use in your projects.
+
+![](55.png)
+
+Custom hook is really just a JavaScript function, so it can receive and return any data that is relevant to this custom hook. In fact, it's very common to return an object or an array from a custom hook.
+And notice how this is different from components, which are also just regular JavaScript functions but which can only receive props and always have to return some JSX. Now, the difference between regular functions and custom hooks is that custom hooks need to use one or more React hooks. The function name needs to start with the word `use`, just like all the built-in React hooks.
+
+---
