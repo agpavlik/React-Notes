@@ -27,7 +27,7 @@
 - [Key Prop](#25)
 - [State Batching](#26)
 - [Events](#27)
-  - [Practical implication](#28)
+- [Practical implication](#28)
 - [Effects and Data Fetching](#29)
   - [useEffect example with keypress](#30)
   - [useEffect example with data fetching](#31)
@@ -36,9 +36,12 @@
   - [useRef example with focus on the input](#34)
   - [useRef example with variable persisted across renders ](#35)
 - [Custom hooks](#36)
-- ***
+  - [useLocalStorageState as example of custom hook](#37)
+- [useReducer](#39)
 
-### What is React <a name="1"></a>
+---
+
+### 📒 What is React <a name="1"></a>
 
 `React` – extremely popular declarative, component-based, state-driven JavaScript library for building user interfaces, created by Facebook.
 
@@ -54,14 +57,14 @@ There are several options and freamworks to work with React (Vite, Next.js, Remi
 
 ---
 
-### Components <a name="2"></a>
+### 📒 Components <a name="2"></a>
 
 React applications are entirely made out of components. We build complex UIs by building multiple components and combining them. Components can be reused, nested inside each other, and pass data between them.
 ![](2.png)
 
 ---
 
-### JSX <a name="3"></a>
+### 📒 JSX <a name="3"></a>
 
 Components must return a block of JSX. `Extension of JavaScript` that allows us to
 embed JavaScript, CSS, and React components into HTML. Each JSX element is converted to a `React.createElement` function call.
@@ -71,7 +74,7 @@ embed JavaScript, CSS, and React components into HTML. Each JSX element is conve
 
 ---
 
-### Props <a name="4"></a>
+### 📒 Props <a name="4"></a>
 
 `Props` like a chain or communication chanel between a parent and a child components. Props are used to pass data from parent components to child components (down the component tree). With props, parent components control how child components look and work. This one-way date flow makes applications more predictable and easier to understand, easier to debug. Anything can be passed as props: single value, arrays, objects, functions, even other components.
 So, props is data coming from the outside, and can only be updated by the parent component. Props are read-only, they are immutable! This is one of React’s strict rules. If you need to mutate props, you actually need state.
@@ -244,7 +247,7 @@ function Footer() {
 
 ---
 
-### State <a name="9"></a>
+### 📒 State <a name="9"></a>
 
 `State` is the most important concept in React. `State` is a “component’s memory”.
 `State` is internal data that can be updated by the components logic. Data that a component can hold over time, necessary for information that it needs to remember throughout the app’s lifecycle. Updating component state triggers React to re-render the component.
@@ -766,7 +769,7 @@ export default function PackingList({ items }) {
 
 ---
 
-#### useState example with open/close button <a name="20"></a>
+#### 🚩 useState example with open/close button <a name="20"></a>
 
 Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
@@ -787,7 +790,7 @@ function Box({ children }) {
 
 ---
 
-### State Management <a name="15"></a>
+### 📒 State Management <a name="15"></a>
 
 `State management`: Deciding when to create pieces of state, what types of state are necessary, where to place each piece of state, and how data flows trough app.
 ![](7.png)
@@ -839,7 +842,7 @@ export default function Stats({ items }) {
 
 ---
 
-### Children prop <a name="17"></a>
+### 📒 Children prop <a name="17"></a>
 
 When we include the button component in some JSX, instead of immediately closing the element, we can write some more JSX into that element. We can write anything that we want between the opening and the closing tag of the component that we are using.
 
@@ -928,7 +931,7 @@ function Button({ textColor, bgColor, onClick, children }) {
 
 ---
 
-### Split a UI into components<a name="18"></a>
+### 📒 Split a UI into components<a name="18"></a>
 
 ![](12.png)
 ![](13.png)
@@ -937,7 +940,7 @@ function Button({ textColor, bgColor, onClick, children }) {
 
 ---
 
-### Component composition<a name="19"></a>
+### 📒 Component composition<a name="19"></a>
 
 `Component composition`: combining different components using the
 children prop (or explicitly defined props)
@@ -1027,7 +1030,7 @@ function Box({ element }) {} // can be called anything
 
 ---
 
-### Styling variants <a name="21"></a>
+### 📒 Styling variants <a name="21"></a>
 
 Variant 1
 
@@ -1052,7 +1055,7 @@ function Header() {
 
 ---
 
-### Props as a Component API. PropTypes.<a name="22"></a>
+### 📒 Props as a Component API. PropTypes.<a name="22"></a>
 
 Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
@@ -1120,7 +1123,7 @@ export default function StarRating({
 
 ---
 
-### Components, Instances, and Elements<a name="23"></a>
+### 📒 Components, Instances, and Elements<a name="23"></a>
 
 Components are what we write in order to describe a piece of the user interface. And the component is just a regular JavaScript function, but it's a function that returns React elements. And we usually write these elements using the JSX syntax.
 So we can essentially think of a component as a blueprint or a template, that React then creates one or multiple component instances. So we can say that an instance is like the actual physical manifestation of a component living in our componentry.
@@ -1132,7 +1135,7 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 
 ---
 
-### Rendering<a name="24"></a>
+### 📒 Rendering<a name="24"></a>
 
 ![](18.png)
 ![](19.png)
@@ -1154,7 +1157,7 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 
 ---
 
-### Key Prop<a name="25"></a>
+### 📒 Key Prop<a name="25"></a>
 
 ![](29.png)
 ![](30.png)
@@ -1163,7 +1166,7 @@ DOM Element (HTML) is a visual representation of the component instance in the b
 
 ---
 
-### State Batching<a name="26"></a>
+### 📒 State Batching<a name="26"></a>
 
 ![](36.png)
 How these three pieces of state are actually updated behind the scenes? So we might think that, as React sees the set answer function call, it would update the state to the empty string as requested, and then trigger a re-render, and the commit phase,then it would move on to the next line, and to the same thing again,and finally do the entire thing one more time for the third state update. Intuitively, we would think that, if there are three state variables being updated in this event handler,then React would re-render three times. However, this is not how React updates multiple pieces of state in the same event handler function. Instead, these state updates will actually get batched into just one state update for the entire event handler. So updating multiple pieces of state won't immediately cause a re-render for each update. Instead, all pieces of state inside the event handler are updated in one go. They are batched, and only then React will trigger one single render and commit.
@@ -1174,7 +1177,7 @@ If these date updates belong together, it really wouldn't make much sense to upd
 
 ---
 
-### Events<a name="27"></a>
+### 📒 Events<a name="27"></a>
 
 ![](39.png)
 Let's say that some event happens, like a click on one of the three buttons. As soon as the event fires, a new event object will be created, but it will not be created where the click
@@ -1184,7 +1187,7 @@ actually happened. Instead, the object will be created at the root of the docume
 
 ---
 
-### Practical implication <a name="28"></a>
+### 📒 Practical implication <a name="28"></a>
 
 ![](42.png)
 ![](43.png)
@@ -1192,7 +1195,7 @@ actually happened. Instead, the object will be created at the root of the docume
 
 ---
 
-### Effects and Data Fetching<a name="29"></a>
+### 📒 Effects and Data Fetching<a name="29"></a>
 
 If we use JS fetch function it will run an infinite number of requests, and it never really stops. So every second our app is firing off multiple fetch requests to the API, which of course is a really bad idea. The reason is that setting the state here in the render logic will then immediately cause the component to re-render itself again. However, as the component is re-rendered, the function here of course is executed again, which then will fetch again, which in turn will set the movies again as well. And then this whole thing starts over and over again.
 And so this is the reason why it is really not allowed to set state in render logic.
@@ -1415,6 +1418,8 @@ export default function App() {
 
 #### 🚩 useEffect example with local storage<a name="33"></a>
 
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
 ```javascript
 // part 1 - implement the local storage functionality
 
@@ -1436,18 +1441,20 @@ const [watched, setWatched] = useState(function () {
 
 ---
 
-### useRef <a name="32"></a>
+### 📒 useRef <a name="32"></a>
 
 ![](53.png)
 ![](54.png)
 
 ---
 
-### useRef example with focus on the input <a name="34"></a>
+#### 🚩 useRef example with focus on the input <a name="34"></a>
 
 Using a ref with a DOM element happens in three steps. First of all, we create the useRef. Then we pass in the initial value that we want to be in that current property.
 Second step - come to the element that we want to select and to use the ref prop and then just pass in the ref that we just created.
 Third step - use the useEffect hook.
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
 ```javascript
 function Search({ query, setQuery }) {
@@ -1485,9 +1492,11 @@ function Search({ query, setQuery }) {
 
 ---
 
-### useRef example with variable persisted across renders <a name="35"></a>
+#### 🚩 useRef example with variable persisted across renders <a name="35"></a>
 
 Let's now focus on the other use case of refs which give us a variable that is persisted across renders without triggering a re-render.
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
 
 ```javascript
 function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
@@ -1528,7 +1537,7 @@ to simply adding one.
 
 ---
 
-### Custom hooks<a name="36"></a>
+### 📒 Custom hooks<a name="36"></a>
 
 `React hooks` are essentially special functions that are built into React and which allow us to hook into some of React's internal mechanisms, or in other words, hooks APIs that expose some internal React functionality, such as creating and accessing state from the fiber tree, or registering side effects in the fiber tree.
 The fiber tree is somewhere deep inside React and usually not accessible to us at all. But using the useState or the useEffect hook, we can essentially hook into that internal mechanism.
@@ -1570,3 +1579,41 @@ Custom hook is really just a JavaScript function, so it can receive and return a
 And notice how this is different from components, which are also just regular JavaScript functions but which can only receive props and always have to return some JSX. Now, the difference between regular functions and custom hooks is that custom hooks need to use one or more React hooks. The function name needs to start with the word `use`, just like all the built-in React hooks.
 
 ---
+
+#### 🚩 useLocalStorageState as example of custom hook <a name="37"></a>
+
+Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
+
+```javascript
+// search movie
+
+import { useState, useEffect } from "react";
+
+export function useLocalStorageState(initialState, key) {
+  const [value, setValue] = useState(function () {
+    const storedValue = localStorage.getItem(key); // getItem
+    return storedValue ? JSON.parse(storedValue) : initialState;
+  });
+
+  // updated a watched movie
+  useEffect(
+    function () {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    [value, key]
+  );
+  return [value, setValue];
+}
+```
+
+```javascript
+import { useLocalStorageState } from "./useLocalStorageState";
+
+export default function App() {
+  const [watched, setWatched] = useLocalStorageState([], "watched");
+}
+```
+
+---
+
+### 📒 useReducer <a name="38"></a>
