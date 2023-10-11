@@ -1616,6 +1616,188 @@ export default function App() {
 
 ---
 
----
-
 ### 📒 useReducer <a name="38"></a>
+
+`useReducer` hook is more advanced and more complex way of managing state instead of the useState hook. The useReducer hook works with a so-called `reducer function`, which is a pure function that will always take in the previous state and the so-called `action` as an argument and will then return the next state.
+
+![](56.png)
+![](57.png)
+![](58.png)
+![](59.png)
+![](60.png)
+
+Example - [Udemy-date-counter](https://github.com/agpavlik/Udemy-date-counter)
+with useState
+
+```javascript
+import { useState } from "react";
+
+function DateCounter() {
+  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(1);
+
+  // This mutates the date object.
+  const date = new Date("june 21 2027");
+  date.setDate(date.getDate() + count);
+
+  const dec = function () {
+    // setCount((count) => count - 1);
+    setCount((count) => count - step);
+  };
+
+  const inc = function () {
+    // setCount((count) => count + 1);
+    setCount((count) => count + step);
+  };
+
+  const defineCount = function (e) {
+    setCount(Number(e.target.value));
+  };
+
+  const defineStep = function (e) {
+    setStep(Number(e.target.value));
+  };
+
+  const reset = function () {
+    setCount(0);
+    setStep(1);
+  };
+
+  return (
+    <div className="counter">
+      <div>
+        <input
+          type="range"
+          min="0"
+          max="10"
+          value={step}
+          onChange={defineStep}
+        />
+        <span>{step}</span>
+      </div>
+
+      <div>
+        <button onClick={dec}>-</button>
+        <input value={count} onChange={defineCount} />
+        <button onClick={inc}>+</button>
+      </div>
+
+      <p>{date.toDateString()}</p>
+
+      <div>
+        <button onClick={reset}>Reset</button>
+      </div>
+    </div>
+  );
+}
+export default DateCounter;
+```
+
+Example - [Udemy-react-quiz](https://github.com/agpavlik/Udemy-react-quiz)
+with useReducer
+
+```javascript
+import { useReducer } from "react";
+
+// step 2 - create a variable with initial state
+const initialState = { count: 0, step: 1 };
+
+// step 2 - create function reducer as argument for useReducer. The idea of the reducer is to take the current state plus the action and based on that, return the next state.
+function reducer(state, action) {
+  //   if (action.type === "inc") return state + action.payload;
+  //   if (action.type === "dec") return state + action.payload;
+  //   if (action.type === "setCount") return action.payload;
+  // }
+
+  // step 3 - It is very common to use a switch statement inside of a reducer function instead of multiple ifs.
+  // The value that we want to evaluate is the action.type.
+  switch (action.type) {
+    // then we just do one case for all the possible cases that we can have.
+    case "dec":
+      return { ...state, count: state.count - state.step };
+    // This is exactly the way that we have been updating objects. So basically creating a brand new object which contains all the information of the previous object.
+    case "inc":
+      return { ...state, count: state.count + state.step };
+    case "setCount":
+      return { ...state, count: action.payload };
+    case "setStep":
+      return { ...state, step: action.payload };
+    case "reset":
+      return initialState;
+
+    default:
+      throw new Error("Unknown action");
+  }
+}
+
+// step 1 - replace useState with useReducer
+function DateCounter() {
+  // const [count, setCount] = useState(0);
+  // const [step, setStep] = useState(1);
+  // useReducer hook returns the current state and dispatch function instead of state update function. This dispatch function can also be used to update the state, but it works in a slightly different way.
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { count, step } = state;
+
+  const date = new Date("june 21 2027");
+  date.setDate(date.getDate() + count);
+
+  const dec = function () {
+    // setCount((count) => count - 1);
+    // setCount((count) => count - step);
+    // step 4 - call dispatch function
+    dispatch({ type: "dec", payload: -1 });
+  };
+
+  const inc = function () {
+    // setCount((count) => count + 1);
+    // setCount((count) => count + step);
+    // step 4 - call dispatch function
+    dispatch({ type: "inc", payload: 1 });
+  };
+
+  const defineCount = function (e) {
+    // setCount(Number(e.target.value));
+    // step 4 - call dispatch function
+    dispatch({ type: "setCount", payload: Number(e.target.value) });
+  };
+
+  const defineStep = function (e) {
+    // setStep(Number(e.target.value));
+    // step 4 - call dispatch function
+    dispatch({ type: "setStep", payload: Number(e.target.value) });
+  };
+
+  const reset = function () {
+    // step 4 - call dispatch function
+    dispatch({ type: "reset" });
+  };
+
+  return (
+    <div className="counter">
+      <div>
+        <input
+          type="range"
+          min="0"
+          max="10"
+          value={step}
+          onChange={defineStep}
+        />
+        <span>{step}</span>
+      </div>
+
+      <div>
+        <button onClick={dec}>-</button>
+        <input value={count} onChange={defineCount} />
+        <button onClick={inc}>+</button>
+      </div>
+
+      <p>{date.toDateString()}</p>
+
+      <div>
+        <button onClick={reset}>Reset</button>
+      </div>
+    </div>
+  );
+}
+export default DateCounter;
+```
