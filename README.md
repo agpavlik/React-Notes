@@ -42,6 +42,7 @@
 - [useReducer](#39)
   - [useReducer example with bank account](#42)
 - [React Router](#43)
+- [Context API](#44)
 
 ---
 
@@ -1960,3 +1961,5 @@ export default function App() {
 
 ![](61.png)
 ![](62.png)
+
+### 📒 Context API <a name="44"></a>
