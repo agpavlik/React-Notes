@@ -43,6 +43,8 @@
   - [useReducer example with bank account](#42)
 - [React Router](#43)
 - [Context API](#44)
+- [Redux](#45)
+- [React Query](#46)
 
 ---
 
