@@ -44,6 +44,7 @@
 - [React Router](#43)
 - [Context API](#44)
 - [Redux](#45)
+  - [React Router example](#46)
 - [React Query](#46)
 
 ---
@@ -1961,7 +1962,81 @@ export default function App() {
 
 ### 📒 React Router <a name="43"></a>
 
+In React, `routing` is usually handled by the third party package called React Router. And this is probably the most important and most used React third party library out there. The routing is fundamental for building a single-page applications. `Single-page applications`, or SPAs for short, are web applications that are executed entirely on the client, so only in the user's web browser. So usually on a normal webpage, when we click on a link, the browser will load a completely new page and then show us that new page, right? But single-page applications are completely different. The page is simply updated by JavaScript, which means that there will never be a complete page reload. And that's the whole point of the single-page application. So, without any hard reloads. This makes the web application feel just like a native desktop or a mobile application, which is really a fantastic user experience.
 ![](61.png)
 ![](62.png)
+Whenever the URL is changed, React Router and React itself will update the DOM by simply rendering the component that corresponds to the new URL. And then, of course, the whole cycle can be repeated as many times as necessary.
+
+---
+
+#### 🚩 React Router example <a name="44"></a>
+
+Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
+
+```javascript
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import CityList from "./components/CityList";
+import City from "./components/City";
+import CountryList from "./components/CountryList";
+import Form from "./components/Form";
+import SpinnerFullPage from "./components/SpinnerFullPage";
+import Product from "./pages/Product";
+import Pricing from "./pages/Pricing";
+import Homepage from "./pages/Homepage";
+import PageNotFound from "./pages/PageNotFound";
+import AppLayout from "./pages/AppLayout";
+import Login from "./pages/Login";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="product" element={<Product />} />
+        <Route path="pricing" element={<Pricing />} />
+        <Route path="login" element={<Login />} />
+        <Route
+          path="app"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate replace to="cities" />} />
+          <Route path="cities" element={<CityList />} />
+          <Route path="cities/:id" element={<City />} />
+          <Route path="countries" element={<CountryList />} />
+          <Route path="form" element={<Form />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+import styles from "./Product.module.css";
+import PageNav from "../components/PageNav";
+
+export default function Product() {
+  return (
+    <main className={styles.product}>
+      <PageNav />
+      <section>
+        <img
+          src="img-1.jpg"
+          alt="person with dog overlooking mountain with sunset"
+        />
+        <div>
+          <h2>About MapMarker.</h2>
+          <p>Lorem ipsum</p>
+          <p>Lorem ipsum</p>
+        </div>
+      </section>
+    </main>
+  );
+}
+```
 
 ### 📒 Context API <a name="44"></a>
