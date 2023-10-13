@@ -1455,6 +1455,7 @@ useEffect(function (){
       setIsLoading(false)
     }
   }
+  fetchCities();
 }, []);
 
 ```
@@ -2004,6 +2005,9 @@ In React, `routing` is usually handled by the third party package called React R
 ![](62.png)
 Whenever the URL is changed, React Router and React itself will update the DOM by simply rendering the component that corresponds to the new URL. And then, of course, the whole cycle can be repeated as many times as necessary.
 
+![](64.png)
+![](65.png)
+
 ---
 
 #### 🚩 React Router example <a name="44"></a>
@@ -2011,6 +2015,7 @@ Whenever the URL is changed, React Router and React itself will update the DOM b
 Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
 
 `Index route`
+
 `Outlet element`
 
 ```javascript
