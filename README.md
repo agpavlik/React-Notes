@@ -44,7 +44,8 @@
 - [useReducer](#39)
   - [useReducer example with bank account](#42)
 - [React Router](#43)
-  - [React Router example](#44)
+  - [React Router example & index route & Outlet element](#44)
+  - [React Router example with storing state in the URL ](#45)
 - [Context API]()
 - [Redux]()
 - [React Query]()
@@ -2012,16 +2013,12 @@ Whenever the URL is changed, React Router and React itself will update the DOM b
 
 ---
 
-#### 🚩 React Router example <a name="44"></a>
+#### 🚩 React Router example & index route & Outlet element<a name="44"></a>
 
 Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
 
-`Index route`
-
-`Outlet element`
-
 ```javascript
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import CityList from "./components/CityList";
 import City from "./components/City";
@@ -2094,6 +2091,7 @@ export default function Homepage() {
 }
 
 ---
+
 // Element NavLink has an additional class("active") which allow to style this element differently. But Link doesnot have this class.
 import { NavLink } from "react-router-dom";
 import styles from "./PageNav.module.css";
@@ -2123,13 +2121,12 @@ export default function PageNav() {
   );
 }
 
-
+---
 
 import Logo from "./Logo";
 import { Outlet } from "react-router-dom";
 import AppNav from "./AppNav";
 import styles from "./Sidebar.module.css";
-
 
 // Outlet element is used for nested/children routes (like inside AppLayout in this case) and actually pretty similar to the children prop.
 function Sidebar() {
@@ -2152,6 +2149,194 @@ function Sidebar() {
 export default Sidebar;
 
 ```
+
+---
+
+#### 🚩 React Router example with storing state in the URL <a name="45"></a>
+
+Let's use React Router params in order to pass some data between pages. So to use params with React Router, we basically do it in three steps.
+First we create a new route, then we link to that route, and then in that route we read the state from the URL.
+
+```javascript
+
+// 1. Create route <Route path="cities/:id">
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="app"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate replace to="cities" />} />
+          <Route path="cities" element={<CityList />} />
+          <Route path="cities/:id" element={<City />} />
+          <Route path="countries" element={<CountryList />} />
+          <Route path="form" element={<Form />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+---
+
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+
+// 3 - The final step, we read data from the URL using this useParams hook.
+
+function City() {
+  const { id } = useParams();
+  const { getCity, currentCity, isLoading } = useCities();
+
+  return (
+    <div className={styles.city}>
+      <div className={styles.row}>
+        <h6>Learn more</h6>
+        <a
+          href={`https://en.wikipedia.org/wiki/${cityName}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Check out {cityName} on Wikipedia &rarr;
+        </a>
+      </div>
+    </div>
+  );
+}
+
+---
+
+import { Link } from "react-router-dom";
+import { useCities } from "../contexts/CitiesContext";
+import styles from "./CityItem.module.css";
+
+
+function CityItem({ city }) {
+  const { currentCity, deleteCity } = useCities();
+  const { cityName, emoji, date, id, position } = city;
+
+  //2 - Link to the exact city with id. So we have both the latitude and the longitude right now in this globally accessible URL, and so it is as if this data is now global state, which we can access from everywhere.
+
+  return (
+    <li>
+      <Link
+        className={`${styles.cityItem} ${
+          id === currentCity.id ? styles["cityItem--active"] : ""
+        }`}
+        to={`${id}?lat=${position.lat}&lng=${position.lng}`}
+      >
+      </Link>
+    </li>
+  );
+}
+
+---
+
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import styles from "./Map.module.css";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
+import { useCities } from "../contexts/CitiesContext";
+import { useGeolocation } from "../hooks/useGeolocation";
+import Button from "./Button";
+import { useUrlPosition } from "../hooks/useUrlPosition";
+
+function Map() {
+  const { cities } = useCities();
+  const [mapPosition, setMapPosition] = useState([40, 0]);
+
+  const {
+    isLoading: isLoadingPosition,
+    position: geolocationPosition,
+    getPosition,
+  } = useGeolocation();
+
+  const [mapLat, mapLng] = useUrlPosition();
+
+  useEffect(
+    function () {
+      if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
+    },
+    [mapLat, mapLng]
+  );
+
+  useEffect(
+    function () {
+      if (geolocationPosition)
+        setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
+    },
+    [geolocationPosition]
+  );
+
+  return (
+    <div className={styles.mapContainer}>
+      {!geolocationPosition && (
+        <Button type="position" onClick={getPosition}>
+          {isLoadingPosition ? "Loading ..." : "Use your position"}
+        </Button>
+      )}
+      <MapContainer
+        center={mapPosition}
+        zoom={6}
+        scrollWheelZoom={true}
+        className={styles.map}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+        />
+        {cities.map((city) => (
+          <>
+            <Marker
+              position={[city.position.lat, city.position.lng]}
+              key={city.id}
+            >
+              <Popup>
+                <span>{city.emoji}</span>
+                <span>{city.cityName}</span>
+              </Popup>
+            </Marker>
+          </>
+        ))}
+        <ChangeCenter position={mapPosition} />
+        <DetectClick />
+      </MapContainer>
+    </div>
+  );
+}
+
+function ChangeCenter({ position }) {
+  const map = useMap();
+  map.setView(position);
+  return null;
+}
+
+function DetectClick() {
+  const navigate = useNavigate();
+  useMapEvents({
+    click: (e) => navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`),
+  });
+}
+
+export default Map;
+
+```
+
+---
 
 ### 📒 Context API <a name=""></a>
 
