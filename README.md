@@ -31,7 +31,8 @@
 - [Practical implication](#28)
 - [Effects and Data Fetching](#29)
   - [useEffect example with keypress](#30)
-  - [useEffect example with data fetching with async](#31)
+  - [useEffect example with data fetching with async 1](#31)
+  - [useEffect example with data fetching with async 2](#311)
   - [useEffect example with data fetching with useReducer](#40)
   - [useEffect example with timer](#41)
   - [useEffect example with local storage](#33)
@@ -1376,7 +1377,7 @@ export default function App() {
 
 ---
 
-#### 🚩 useEffect example with data fetching with async<a name="31"></a>
+#### 🚩 useEffect example with data fetching with async 1<a name="31"></a>
 
 Example - [Udemy-currency-converter](https://github.com/agpavlik/Udemy-currency-converter)
 
@@ -1437,6 +1438,29 @@ export default function App() {
 
 ---
 
+#### 🚩 useEffect example with data fetching with async 2<a name="311"></a>
+
+```javascript
+
+useEffect(function (){
+  async function fetchCities(){
+    try{
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/cities`);
+      const data = await res.json();
+      setCities(data);
+    } catch {
+      alert ("There was an error loading data...";)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+}, []);
+
+```
+
+---
+
 #### 🚩 useEffect example with data fetching with useReducer<a name="40"></a>
 
 Example - [Udemy-react-quiz](https://github.com/agpavlik/Udemy-react-quiz)
@@ -1456,7 +1480,7 @@ useEffect(function () {
 
 Example - [Udemy-react-quiz](https://github.com/agpavlik/Udemy-react-quiz)
 
-````javascript
+```javascript
 function Timer({ dispatch, secondsRemaining }) {
   const mins = Math.floor(secondsRemaining / 60);
   const seconds = secondsRemaining % 60;
@@ -1477,7 +1501,7 @@ function Timer({ dispatch, secondsRemaining }) {
     </div>
   );
 }
-
+```
 
 ---
 
@@ -1502,7 +1526,7 @@ const [watched, setWatched] = useState(function () {
   const storedValue = localStorage.getItem("watched");
   return JSON.pars(storedValue); // convert back from string
 });
-````
+```
 
 ---
 
@@ -1986,6 +2010,9 @@ Whenever the URL is changed, React Router and React itself will update the DOM b
 
 Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
 
+`Index route`
+`Outlet element`
+
 ```javascript
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
@@ -2000,6 +2027,9 @@ import Homepage from "./pages/Homepage";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./pages/AppLayout";
 import Login from "./pages/Login";
+
+
+//  An index route (inside AppLayout) is the default child route that is going to be matched if none of these other routes here matches.
 
 function App() {
   return (
@@ -2117,3 +2147,7 @@ export default Sidebar;
 ```
 
 ### 📒 Context API <a name=""></a>
+
+```
+
+```
