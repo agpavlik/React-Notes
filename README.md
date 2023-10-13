@@ -46,6 +46,7 @@
 - [React Router](#43)
   - [React Router example & index route & Outlet element](#44)
   - [React Router example with storing state in the URL & reading a Query String](#45)
+  - [React Router example with Navigation](#46)
 - [Context API]()
 - [Redux]()
 - [React Query]()
@@ -2154,6 +2155,8 @@ export default Sidebar;
 
 #### 🚩 React Router example with storing state in the URL & reading a Query String <a name="45"></a>
 
+Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
+
 Let's use React Router params in order to pass some data between pages. So to use params with React Router, we basically do it in three steps.
 First we create a new route, then we link to that route, and then in that route we read the state from the URL.
 
@@ -2267,6 +2270,52 @@ export function useUrlPosition() {
   return [lat, lng];
 }
 
+```
+
+---
+
+#### 🚩 React Router example with Navigation <a name="46"></a>
+
+`Programmatic navigation` means to move to a new URL without the user having to click on any link. And a common use case of this behavior is right after submitting a form. So many times when the user submits a form, we want them to move to a new page in our application automatically.
+
+Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
+
+```javascript
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+function App() {
+  return (
+    <AuthProvider>
+      <CitiesProvider>
+        <BrowserRouter>
+          <Suspense fallback={<SpinnerFullPage />}>
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="product" element={<Product />} />
+              <Route path="pricing" element={<Pricing />} />
+              <Route path="login" element={<Login />} />
+              <Route
+                path="app"
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate replace to="cities" />} />
+                <Route path="cities" element={<CityList />} />
+                <Route path="cities/:id" element={<City />} />
+                <Route path="countries" element={<CountryList />} />
+                <Route path="form" element={<Form />} />
+              </Route>
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </CitiesProvider>
+    </AuthProvider>
+  );
+}
 ```
 
 ---
