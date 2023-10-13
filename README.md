@@ -2087,6 +2087,33 @@ export default function PageNav() {
 }
 
 
+
+import Logo from "./Logo";
+import { Outlet } from "react-router-dom";
+import AppNav from "./AppNav";
+import styles from "./Sidebar.module.css";
+
+
+// Outlet element is used for nested/children routes (like inside AppLayout in this case) and actually pretty similar to the children prop.
+function Sidebar() {
+  return (
+    <div className={styles.sidebar}>
+      <Logo />
+      <AppNav />
+
+      <Outlet />
+
+      <footer className={styles.footer}>
+        <p className={styles.copyright}>
+          &copy; Copyright {new Date().getFullYear()} by MapMarker Inc.
+        </p>
+      </footer>
+    </div>
+  );
+}
+
+export default Sidebar;
+
 ```
 
 ### 📒 Context API <a name=""></a>
