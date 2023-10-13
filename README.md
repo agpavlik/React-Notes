@@ -2010,6 +2010,8 @@ Whenever the URL is changed, React Router and React itself will update the DOM b
 
 ---
 
+---
+
 #### 🚩 React Router example <a name="44"></a>
 
 Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
