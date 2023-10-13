@@ -21,6 +21,7 @@
 - [Split a UI into components](#18)
 - [Component composition](#19)
 - [Styling variants](#21)
+- [Styling options for React application](#211)
 - [Props as a Component API. PropTypes.](#22)
 - [Components, Instances, and Elements](#23)
 - [Rendering](#24)
@@ -42,10 +43,10 @@
 - [useReducer](#39)
   - [useReducer example with bank account](#42)
 - [React Router](#43)
-- [Context API](#44)
-- [Redux](#45)
-  - [React Router example](#46)
-- [React Query](#46)
+  - [React Router example](#44)
+- [Context API]()
+- [Redux]()
+- [React Query]()
 
 ---
 
@@ -1063,6 +1064,18 @@ function Header() {
 
 ---
 
+### 📒 Styling options for React application. <a name="211"></a>
+
+React really doesn't care about how you style your applications.
+![](63.png)
+
+- CSS modules are pretty similar to regular CSS files with the difference that we write just one CSS file for each of our components. The styles in that file will then be scoped to only that component so that no other component can use them.
+- CSS in JavaScript library like styled components. So as the name says with CSS in JavaScript, you actually write your CSS inside a JavaScript file, so in the same file where you define your components. What's special about a CSS in JavaScript library is that it allows us to create React components that have our styles directly apply to them, which we can then use just like regular components. So this fully embraces the React philosophy that a component should contain all the information about its appearance, and so that includes CSS.
+- Tailwind use predefined utility classes to define individual styles, to use flexbox, to make layouts responsive, to make hover effects and really to design your entire UI, and all that without ever having to leave the JSX markup.
+- One more option here, which is basically to not write any CSS at all. Well, it is actually possible, because you can build your entire project using a fully fledged UI component library, for example, like Material UI, Chakra UI, or Mantine. So essentially, a component library like those contains all kinds of prebuilt and pre-styled components that are common in most web applications.
+
+---
+
 ### 📒 Props as a Component API. PropTypes.<a name="22"></a>
 
 Example - [Udemy-use-popcorn](https://github.com/agpavlik/Udemy-use-popcorn)
@@ -2016,27 +2029,64 @@ function App() {
   );
 }
 
-import styles from "./Product.module.css";
-import PageNav from "../components/PageNav";
+---
 
-export default function Product() {
+import { Link } from "react-router-dom";
+import styles from "./Homepage.module.css";
+
+export default function Homepage() {
   return (
-    <main className={styles.product}>
-      <PageNav />
+    <main className={styles.homepage}>
       <section>
-        <img
-          src="img-1.jpg"
-          alt="person with dog overlooking mountain with sunset"
-        />
-        <div>
-          <h2>About MapMarker.</h2>
-          <p>Lorem ipsum</p>
-          <p>Lorem ipsum</p>
-        </div>
+        <h1>
+          You travel the world.
+          <br />
+          MapMarker keeps track of your adventures.
+        </h1>
+        <h2>
+          A world map that tracks your footsteps into every city you can think
+          of. Never forget your wonderful experiences, and show your friends how
+          you have wandered the world.
+        </h2>
+        <Link to="/login" className="cta">
+          Start tracking now
+        </Link>
       </section>
     </main>
   );
 }
+
+---
+// Element NavLink has an additional class("active") which allow to style this element differently. But Link doesnot have this class.
+import { NavLink } from "react-router-dom";
+import styles from "./PageNav.module.css";
+import Logo from "./Logo";
+
+export default function PageNav() {
+  return (
+    <nav className={styles.nav}>
+      <Logo />
+      <ul>
+        <li>
+          <NavLink to="/">Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/pricing">Pricing</NavLink>
+        </li>
+        <li>
+          <NavLink to="/product">Product</NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" className={styles.ctaLink}>
+            Login
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+
 ```
 
-### 📒 Context API <a name="44"></a>
+### 📒 Context API <a name=""></a>
