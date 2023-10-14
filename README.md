@@ -47,7 +47,7 @@
   - [React Router example & index route & Outlet element](#44)
   - [React Router example with storing state in the URL & reading a Query String](#45)
   - [React Router example with Navigation](#46)
-- [Context API]()
+- [Context API](#47)
 - [Redux]()
 - [React Query]()
 
@@ -2297,8 +2297,7 @@ function Form() {
 
 ---
 
-### 📒 Context API <a name=""></a>
+### 📒 Context API <a name="47"></a>
 
-```
-
-```
+![](66.png)
+![](67.png)
