@@ -2020,19 +2020,6 @@ Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
 
 ```javascript
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import CityList from "./components/CityList";
-import City from "./components/City";
-import CountryList from "./components/CountryList";
-import Form from "./components/Form";
-import SpinnerFullPage from "./components/SpinnerFullPage";
-import Product from "./pages/Product";
-import Pricing from "./pages/Pricing";
-import Homepage from "./pages/Homepage";
-import PageNotFound from "./pages/PageNotFound";
-import AppLayout from "./pages/AppLayout";
-import Login from "./pages/Login";
-
 
 //  An index route (inside AppLayout) is the default child route that is going to be matched if none of these other routes here matches.
 
@@ -2053,10 +2040,6 @@ function App() {
           }
         >
           <Route index element={<Navigate replace to="cities" />} />
-          <Route path="cities" element={<CityList />} />
-          <Route path="cities/:id" element={<City />} />
-          <Route path="countries" element={<CountryList />} />
-          <Route path="form" element={<Form />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
@@ -2067,7 +2050,6 @@ function App() {
 ---
 
 import { Link } from "react-router-dom";
-import styles from "./Homepage.module.css";
 
 export default function Homepage() {
   return (
@@ -2095,8 +2077,6 @@ export default function Homepage() {
 
 // Element NavLink has an additional class("active") which allow to style this element differently. But Link doesnot have this class.
 import { NavLink } from "react-router-dom";
-import styles from "./PageNav.module.css";
-import Logo from "./Logo";
 
 export default function PageNav() {
   return (
@@ -2124,10 +2104,7 @@ export default function PageNav() {
 
 ---
 
-import Logo from "./Logo";
 import { Outlet } from "react-router-dom";
-import AppNav from "./AppNav";
-import styles from "./Sidebar.module.css";
 
 // Outlet element is used for nested/children routes (like inside AppLayout in this case) and actually pretty similar to the children prop.
 function Sidebar() {
@@ -2217,9 +2194,6 @@ function City() {
 ---
 
 import { Link } from "react-router-dom";
-import { useCities } from "../contexts/CitiesContext";
-import styles from "./CityItem.module.css";
-
 
 function CityItem({ city }) {
   const { currentCity, deleteCity } = useCities();
@@ -2242,22 +2216,6 @@ function CityItem({ city }) {
 
 ---
 
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import styles from "./Map.module.css";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
-import { useCities } from "../contexts/CitiesContext";
-import { useGeolocation } from "../hooks/useGeolocation";
-import Button from "./Button";
-import { useUrlPosition } from "../hooks/useUrlPosition";
-
 // Let's try to read this latitude and longitude data from the URL. And so for that, we use the "useSearchParams" custom hook that React Router gives us. It returns an array which has basically the current state which we usually call the "SearchParams" and then second, we get a function with which we can set the SearchParams so we can also update the SearchParams in this way.
 
 import { useSearchParams } from "react-router-dom";
@@ -2277,6 +2235,7 @@ export function useUrlPosition() {
 #### 🚩 React Router example with Navigation <a name="46"></a>
 
 `Programmatic navigation` means to move to a new URL without the user having to click on any link. And a common use case of this behavior is right after submitting a form. So many times when the user submits a form, we want them to move to a new page in our application automatically.
+We can programmatically navigate using the `useNavigate` hook, and also we can use a declarative way with `<Navigate/>` component.
 
 Example - [Udemy-map-marker](https://github.com/agpavlik/Map-Marker)
 
@@ -2285,37 +2244,55 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
   return (
-    <AuthProvider>
-      <CitiesProvider>
-        <BrowserRouter>
-          <Suspense fallback={<SpinnerFullPage />}>
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="product" element={<Product />} />
-              <Route path="pricing" element={<Pricing />} />
-              <Route path="login" element={<Login />} />
-              <Route
-                path="app"
-                element={
-                  <ProtectedRoute>
-                    <AppLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Navigate replace to="cities" />} />
-                <Route path="cities" element={<CityList />} />
-                <Route path="cities/:id" element={<City />} />
-                <Route path="countries" element={<CountryList />} />
-                <Route path="form" element={<Form />} />
-              </Route>
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </CitiesProvider>
-    </AuthProvider>
+    <Routes>
+      <Route
+        path="app"
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate replace to="cities" />} />
+        <Route path="cities" element={<CityList />} />
+        <Route path="cities/:id" element={<City />} />
+        <Route path="countries" element={<CountryList />} />
+        <Route path="form" element={<Form />} />
+      </Route>
+    </Routes>
   );
 }
+
+---
+
+import { useNavigate} from "react-router-dom";
+
+function Map() {
+  //Another hook that is provided by React Router is useNavigate, and all this one does is to return a function called navigate.
+  const navigate = useNavigate();
+
+  return (
+    <div className={styles.mapContainer} onClick={() => navigate('form')}>
+    </div>
+  )
+}
+
+---
+
+import { useNavigate} from "react-router-dom";
+
+function Form() {
+  //Implement the back way. '-1' means the number of steps that we want to go back in the browser's history.
+  const navigate = useNavigate();
+
+  return (
+    <Button type="back" onClick={(e) => e.preventDefault();
+    navigate(-1);
+    }>Back
+    </Button>
+  )
+}
+
 ```
 
 ---
