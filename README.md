@@ -36,6 +36,7 @@
   - [useEffect example with data fetching with useReducer](#40)
   - [useEffect example with timer](#41)
   - [useEffect example with local storage](#33)
+  - [useEffect example with dark mode](#48)
 - [useRef](#32)
   - [useRef example with focus on the input](#34)
   - [useRef example with variable persisted across renders ](#35)
@@ -1533,6 +1534,55 @@ const [watched, setWatched] = useState(function () {
 
 ---
 
+#### 🚩 useEffect example with dark mode<a name="48"></a>
+
+Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
+
+```javascript
+function App() {
+  const [isFakeDark, setIsFakeDark] = useState(false);
+
+  useEffect(
+    function () {
+      document.documentElement.classList.toggle("fake-dark-mode");
+    },
+    [isFakeDark]
+  );
+
+  return (
+    <section>
+      <button
+        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+        className="btn-fake-dark-mode"
+      >
+        {isFakeDark ? "☀️" : "🌙"}
+      </button>
+      <Header />
+      <Main />
+      <Footer />
+    </section>
+  );
+}
+
+//CSS
+.fake-dark-mode {
+  filter: invert(100%);
+  transition: all 0.5s;
+}
+.btn-fake-dark-mode {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 16px;
+  line-height: 1;
+  font-size: 26px;
+  background-color: #ffe8cc;
+  border: none;
+}
+```
+
+---
+
 ### 📒 useRef <a name="32"></a>
 
 ![](53.png)
@@ -2302,7 +2352,7 @@ function Form() {
 ![](66.png)
 ![](67.png)
 
-#### 🚩 Context API example <a name="46"></a>
+#### 🚩 Context API example <a name="48"></a>
 
 Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
 
@@ -2326,9 +2376,7 @@ function App() {
     Array.from({ length: 30 }, () => createRandomPost())
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [isFakeDark, setIsFakeDark] = useState(false);
 
-  // Derived state. These are the posts that will actually be displayed
   const searchedPosts =
     searchQuery.length > 0
       ? posts.filter((post) =>
@@ -2346,16 +2394,8 @@ function App() {
     setPosts([]);
   }
 
-  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
-  useEffect(
-    function () {
-      document.documentElement.classList.toggle("fake-dark-mode");
-    },
-    [isFakeDark]
-  );
-
   return (
-    // 2 step - Provide value to child components
+    // 2 step - Provide value to child components. To do that, we specify the value prop on component, and then we enter JavaScript mode, so that here we can then define an object which will contain all the data that we want to make accessible to the child components.
     <PostContext.Provider
       value={{
         posts: searchedPosts,
@@ -2366,13 +2406,6 @@ function App() {
       }}
     >
       <section>
-        <button
-          onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-          className="btn-fake-dark-mode"
-        >
-          {isFakeDark ? "☀️" : "🌙"}
-        </button>
-
         <Header />
         <Main />
         <Archive />
