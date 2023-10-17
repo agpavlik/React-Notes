@@ -36,7 +36,7 @@
   - [useEffect example with data fetching with useReducer](#40)
   - [useEffect example with timer](#41)
   - [useEffect example with local storage](#33)
-  - [useEffect example with dark mode](#48)
+  - [useEffect example with dark mode](#49)
 - [useRef](#32)
   - [useRef example with focus on the input](#34)
   - [useRef example with variable persisted across renders ](#35)
@@ -49,6 +49,7 @@
   - [React Router example with storing state in the URL & reading a Query String](#45)
   - [React Router example with Navigation](#46)
 - [Context API](#47)
+  - [Context API example](#48)
 - [Redux]()
 - [React Query]()
 
@@ -1534,7 +1535,7 @@ const [watched, setWatched] = useState(function () {
 
 ---
 
-#### 🚩 useEffect example with dark mode<a name="48"></a>
+#### 🚩 useEffect example with dark mode<a name="49"></a>
 
 Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
 
@@ -2416,7 +2417,8 @@ function App() {
 }
 
 function Header() {
-  // 3 step - consuming context value
+  // 3 step - consuming context value.
+  // We need to get 'onClear Posts' function from the context. Let's remove all the props there because we are no longer receiving props. And instead, let's now read this function right here from the context. So to do that, use another React hook - useContext. This hook returns the entire value that we passed into the context. We can destructure it and take out only the part that we want.
   const { onClearPosts } = useContext(PostContext);
 
   return (
@@ -2444,113 +2446,4 @@ function SearchPosts() {
     />
   );
 }
-
-function Results() {
-  const { posts } = useContext(PostContext);
-
-  return <p>🚀 {posts.length} atomic posts found</p>;
-}
-
-function Main() {
-  return (
-    <main>
-      <FormAddPost />
-      <Posts />
-    </main>
-  );
-}
-
-function Posts() {
-  return (
-    <section>
-      <List />
-    </section>
-  );
-}
-
-function FormAddPost() {
-  const { onAddPost } = useContext(PostContext);
-
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-
-  const handleSubmit = function (e) {
-    e.preventDefault();
-    if (!body || !title) return;
-    onAddPost({ title, body });
-    setTitle("");
-    setBody("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Post title"
-      />
-      <textarea
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        placeholder="Post body"
-      />
-      <button>Add post</button>
-    </form>
-  );
-}
-
-function List() {
-  const { posts } = useContext(PostContext);
-
-  return (
-    <ul>
-      {posts.map((post, i) => (
-        <li key={i}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Archive() {
-  const { onAddPost } = useContext(PostContext);
-
-  // Here we don't need the setter function. We're only using state to store these posts because the callback function passed into useState (which generates the posts) is only called once, on the initial render. So we use this trick as an optimization technique, because if we just used a regular variable, these posts would be re-created on every render. We could also move the posts outside the components, but I wanted to show you this trick 😉
-  const [posts] = useState(() =>
-    // 💥 WARNING: This might make your computer slow! Try a smaller `length` first
-    Array.from({ length: 10000 }, () => createRandomPost())
-  );
-
-  const [showArchive, setShowArchive] = useState(false);
-
-  return (
-    <aside>
-      <h2>Post archive</h2>
-      <button onClick={() => setShowArchive((s) => !s)}>
-        {showArchive ? "Hide archive posts" : "Show archive posts"}
-      </button>
-
-      {showArchive && (
-        <ul>
-          {posts.map((post, i) => (
-            <li key={i}>
-              <p>
-                <strong>{post.title}:</strong> {post.body}
-              </p>
-              <button onClick={() => onAddPost(post)}>Add as new post</button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </aside>
-  );
-}
-
-function Footer() {
-  return <footer>&copy; by The Atomic Blog ✌️</footer>;
-}
-
-export default App;
 ```
