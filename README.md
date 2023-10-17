@@ -810,6 +810,9 @@ function Box({ children }) {
 ![](7.png)
 ![](8.png)
 ![](9.png)
+![](68.png)
+![](69.png)
+![](70.png)
 
 `One-way data flow`: Means that data can only be passed from parents to children and never in opposite way. Also, data cannot flow sideways to siblings.
 
@@ -2447,3 +2450,5 @@ function SearchPosts() {
   );
 }
 ```
+
+---
