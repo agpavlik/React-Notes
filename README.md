@@ -51,6 +51,7 @@
 - [Context API](#47)
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
+  - [Context API example with protected route](#51)
 - [Redux]()
 - [React Query]()
 
@@ -2627,4 +2628,56 @@ function CitiesProvider({ children }) {
     </CitiesContext.Provider>
   );
 }
+```
+
+---
+
+#### 🚩 Context API example with protected route<a name="51"></a>
+
+The common practice is to create a specialized component which will handle the redirecting and then wrap the entire application in that component.
+
+Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
+
+```javascript
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(
+    function () {
+      if (!isAuthenticated) navigate("/");
+    },
+    [isAuthenticated, navigate]
+  );
+
+  return isAuthenticated ? children : null;
+}
+
+---
+
+import ProtectedRoute from "./pages/ProtectedRoute";
+
+function App() {
+  return (
+        <BrowserRouter>
+          <Suspense fallback={<SpinnerFullPage />}>
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route
+                path="app"
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="form" element={<Form />} />
+              </Route>
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+  );
+}
+
 ```
