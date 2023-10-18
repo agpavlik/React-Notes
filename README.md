@@ -18,6 +18,7 @@
 - [State management](#15)
   - [useState example with derived state ](#16)
 - [Children prop](#17)
+  - [Trick with children to avoid re-render](#171)
 - [Split a UI into components](#18)
 - [Component composition](#19)
 - [Styling variants](#21)
@@ -947,6 +948,67 @@ function Button({ textColor, bgColor, onClick, children }) {
     </button>
   );
 }
+```
+
+---
+
+#### 🚩 Trick with children to avoid re-render<a name="171"></a>
+
+Let's now learn about a simple performance optimization technique which leverages the children prop in order to prevent some components from re-rendering.
+
+Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
+
+```javascript
+function SlowComponent() {
+  // If this is too slow on your maching, reduce the `length`
+  const words = Array.from({ length: 100_000 }, () => "WORD");
+  return (
+    <ul>
+      {words.map((word, i) => (
+        <li key={i}>
+          {i}: {word}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// Trick with children to avoid re-render. Take the Counter functionality out and pass this SlowComponent into the Counter as children. And then as we click on the button, the Counter is of course re-rendered, but this component again has already been pressed in as a prop. So it has already been created before and so it cannot be affected by that state update. It already exists. And that is the reason why React then bails out of re-rendering this children component because nothing could have changed inside of the SlowComponent.
+
+function Counter({ children }) {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <h1>Slow counter?!?</h1>
+      <button onClick={() => setCount((c) => c + 1)}>Increase: {count}</button>
+      {children}
+    </div>
+  );
+}
+
+export default function Test() {
+  return (
+    <div>
+      <h1>Slow counter?!?</h1>
+      <Counter>
+        <SlowComponent />
+      </Counter>
+    </div>
+  );
+}
+
+// This code has been refactored
+
+// export default function Test() {
+//   const [count, setCount] = useState(0);
+//   return (
+//   <div>
+//   <h1>Slow counter?!?</h1>
+//   <button onClick={() => setCount((c) => c + 1)}>Increase: {count}</button>
+//   <SlowComponent />
+//   </div>
+//   );
+// }
 ```
 
 ---
@@ -2684,3 +2746,7 @@ function App() {
 ```
 
 ### 📒 memo, useMemo, useCallback <a name="52"></a>
+
+Quick overview of what can be optimized in React applications and how we can do it. There are many other optimization best practices were not been included in this list.
+![](68.png)
+![](69.png)
