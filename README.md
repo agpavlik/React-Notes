@@ -54,6 +54,8 @@
   - [Context API example with useReducer](#50)
   - [Context API example with protected route](#51)
 - [memo, useMemo, useCallback](#52)
+  - [memo, useMemo, useCallback examples](#53)
+- [Optimizing context re-render](#54)
 - [Redux]()
 - [React Query]()
 
@@ -2758,6 +2760,8 @@ The fundamental concept behind these three tools (` memo, useMemo, useCallback`)
 ![](76.png)
 ![](77.png)
 
+---
+
 #### 🚩 memo, useMemo, useCallback example <a name="53"></a>
 
 Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
@@ -2965,8 +2969,16 @@ const Archive = memo(function Archive({ achiveOptions, onAdd Posts }) {
 function Footer() {
   return <footer>&copy; by The Atomic Blog ✌️</footer>;
 }
-
 ```
+
+---
+
+### 📒 Optimizing context re-render <a name="54"></a>
+
+Let's now take a look at a few strategies that we can use in order to prevent wasted renders related
+to the context API.
+
+It is very important to understand that you only need to optimize your context in case that three things are true at the same time. So first of all, the state in the context needs to change all the time. Second, the context has many consumers. and third, and probably most importantly, the app is actually slow and laggy. So only if all of these are true it is time to optimize context.
 
 ![](78.png)
 ![](79.png)
