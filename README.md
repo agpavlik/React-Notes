@@ -52,6 +52,7 @@
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
   - [Context API example with protected route](#51)
+- [memo, useMemo, useCallback](#52)
 - [Redux]()
 - [React Query]()
 
@@ -2681,3 +2682,5 @@ function App() {
 }
 
 ```
+
+### 📒 memo, useMemo, useCallback <a name="52"></a>
