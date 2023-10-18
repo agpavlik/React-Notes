@@ -2748,12 +2748,19 @@ function App() {
 ### 📒 memo, useMemo, useCallback <a name="52"></a>
 
 Quick overview of what can be optimized in React applications and how we can do it. There are many other optimization best practices were not been included in this list.
-![](68.png)
-![](69.png)
+![](71.png)
+![](72.png)
 
 The fundamental concept behind these three tools (` memo, useMemo, useCallback`) is memoization.
-![](70.png)
-![](71.png)
+![](73.png)
+![](74.png)
+![](75.png)
+![](76.png)
+![](77.png)
+
+#### 🚩 memo, useMemo, useCallback example <a name="53"></a>
+
+Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
 
 ```javascript
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -2780,11 +2787,11 @@ function App() {
             .includes(searchQuery.toLowerCase())
         )
       : posts;
-  //--- Use useCallback to memoize the function
+  //useCallback to memoize the function
   const handleAddPost = useCallback(function handleAddPost(post) {
     setPosts((posts) => [post, ...posts]);
   }, []);
-  //---
+
 
   function handleClearPosts() {
     setPosts([]);
@@ -2797,14 +2804,9 @@ function App() {
     [isFakeDark]
   );
 
-//Let's say that now instead of passing in this prop
-
-right here, I instead want to pass in an object.
-
-So let's create an object here called archive options
-
-and then let's say show is false.
-  // --- It breaks memoization. Add this variable as a prop to Archive component
+  // useMemo
+  // Let's say that now instead of passing in the prop, we want to pass in an object. So let's create an object here called `archiveOptions` and then let's say show is false.
+  // --- It breaks memoization.
   // --- useMemo can fix the aforementioned problem.
   const archiveOptions = useMemo(() => {
     return {
@@ -2812,7 +2814,7 @@ and then let's say show is false.
       title: `Post archive in addition to ${posts.length} main post`,
     };
   }, [posts.length]);
-  // ---
+
 
   return (
     <section>
@@ -2830,7 +2832,9 @@ and then let's say show is false.
         setSearchQuery={setSearchQuery}
       />
       <Main posts={searchedPosts} onAddPost={handleAddPost} />
-      <Archive archiveOptions={archiveOptions} onAddPost={handleAddPost} />
+      <Archive show={false} />
+      // <Archive archiveOptions={archiveOptions} />
+      // <Archive onAddPost={onAddPost} />
       <Footer />
     </section>
   );
@@ -2929,10 +2933,8 @@ function List({ posts }) {
 
 // memo
 // Put the function Archive inside the 'const Archive = memo()'. So basically we call memo with a component as an argument and then this function will return a brand new component and so then we need to store that component also somewhere and we create a variable which we call again 'Archive'.
-const Archive = memo(function Archive({ archiveOptions, onAddPost }) {
-  // Here we don't need the setter function. We're only using state to store these posts because the callback function passed into useState (which generates the posts) is only called once, on the initial render. So we use this trick as an optimization technique, because if we just used a regular variable, these posts would be re-created on every render. We could also move the posts outside the components, but I wanted to show you this trick.
+const Archive = memo(function Archive({ achiveOptions, onAdd Posts }) {
   const [posts] = useState(() =>
-    // 💥 WARNING: This might make your computer slow! Try a smaller `length` first
     Array.from({ length: 10000 }, () => createRandomPost())
   );
 
@@ -2952,8 +2954,7 @@ const Archive = memo(function Archive({ archiveOptions, onAddPost }) {
               <p>
                 <strong>{post.title}:</strong> {post.body}
               </p>
-              <button onClick={() => onAddPost(post)}>Add as new post</button>
-            </li>
+            <button onClick={() => onAddPost(post)}>Add as new post</button>
           ))}
         </ul>
       )}
@@ -2965,5 +2966,7 @@ function Footer() {
   return <footer>&copy; by The Atomic Blog ✌️</footer>;
 }
 
-export default App;
 ```
+
+![](78.png)
+![](79.png)
