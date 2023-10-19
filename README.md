@@ -2749,10 +2749,6 @@ function App() {
 
 ### 📒 memo, useMemo, useCallback <a name="52"></a>
 
-Quick overview of what can be optimized in React applications and how we can do it. There are many other optimization best practices were not been included in this list.
-![](71.png)
-![](72.png)
-
 The fundamental concept behind these three tools (` memo, useMemo, useCallback`) is memoization.
 ![](73.png)
 ![](74.png)
@@ -2975,10 +2971,19 @@ function Footer() {
 
 ### 📒 Optimizing context re-render <a name="54"></a>
 
-Let's now take a look at a few strategies that we can use in order to prevent wasted renders related
-to the context API.
+Quick overview of what can be optimized in React applications and how we can do it. There are many other optimization best practices were not been included in this list.
+![](71.png)
+![](72.png)
+
+Let's now take a look at a few strategies that we can use in order to prevent wasted renders related to the context API.
 
 It is very important to understand that you only need to optimize your context in case that three things are true at the same time. So first of all, the state in the context needs to change all the time. Second, the context has many consumers. and third, and probably most importantly, the app is actually slow and laggy. So only if all of these are true it is time to optimize context.
 
 ![](78.png)
 ![](79.png)
+
+### 📒 Optimizing context re-render <a name="55"></a>
+
+![](80.png)
+![](81.png)
+![](82.png)
