@@ -55,8 +55,8 @@
   - [Context API example with protected route](#51)
 - [memo, useMemo, useCallback](#52)
   - [memo, useMemo, useCallback examples](#53)
-- [Optimizing context re-render](#54)
-- [Redux]()
+- [Optimizing context re-render. Code splitting. Lazy loading.](#54)
+- [Redux](#55)
 - [React Query]()
 
 ---
@@ -2969,21 +2969,56 @@ function Footer() {
 
 ---
 
-### 📒 Optimizing context re-render <a name="54"></a>
+### 📒 Optimizing context re-render. Code splitting. Lazy loading. <a name="54"></a>
 
 Quick overview of what can be optimized in React applications and how we can do it. There are many other optimization best practices were not been included in this list.
 ![](71.png)
 ![](72.png)
 
 Let's now take a look at a few strategies that we can use in order to prevent wasted renders related to the context API.
-
 It is very important to understand that you only need to optimize your context in case that three things are true at the same time. So first of all, the state in the context needs to change all the time. Second, the context has many consumers. and third, and probably most importantly, the app is actually slow and laggy. So only if all of these are true it is time to optimize context.
 
+We've talked a lot about optimizing wasted renders and overall app performance. However, probably the most important thing that we can and should optimize is the `bundle size`.
+
 ![](78.png)
+
+The bigger the bundle, the longer it's gonna take to download which can become a huge problem. For optimisation we can use a technique called `code splitting`. So instead of just having one huge JavaScript file, we will have multiple smaller files which can then be downloaded over time as they become necessary for the application. And this process of loading code sequentially is called `lazy loading`. And this really is one of the biggest performance gains that you can achieve for your users.
+
+Lazy loading example:
+
+```javascript
+//So basically what we're gonna take all the components that represent a page and load each of them separately
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { CitiesProvider } from "./contexts/CitiesContext";
+import { AuthProvider } from "./contexts/FakeAuthContext";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import { lazy, Suspense } from "react";
+
+import CityList from "./components/CityList";
+import City from "./components/City";
+import CountryList from "./components/CountryList";
+import Form from "./components/Form";
+import SpinnerFullPage from "./components/SpinnerFullPage";
+
+// import Product from "./pages/Product";
+// import Pricing from "./pages/Pricing";
+// import Homepage from "./pages/Homepage";
+// import PageNotFound from "./pages/PageNotFound";
+// import AppLayout from "./pages/AppLayout";
+// import Login from "./pages/Login";
+
+// Lazy loading (change 'import' with 'lazy' and add Suspense to Routes)
+const Homepage = lazy(() => import("./pages/Homepage"));
+const Product = lazy(() => import("./pages/Product"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const AppLayout = lazy(() => import("./pages/AppLayout"));
+const Login = lazy(() => import("./pages/Login"));
+```
+
+### 📒 Redux <a name="55"></a>
+
 ![](79.png)
-
-### 📒 Optimizing context re-render <a name="55"></a>
-
 ![](80.png)
 ![](81.png)
 ![](82.png)
