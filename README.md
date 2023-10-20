@@ -57,6 +57,7 @@
   - [memo, useMemo, useCallback examples](#53)
 - [Optimizing context re-render. Code splitting. Lazy loading.](#54)
 - [Redux](#55)
+  - [Redux examples](#56)
 - [React Query]()
 
 ---
