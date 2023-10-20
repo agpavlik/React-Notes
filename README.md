@@ -1422,6 +1422,14 @@ useEffect(
 );
 ```
 
+#### useEffect Rules and Best Practices
+
+![](80.png)
+![](81.png)
+![](82.png)
+
+## Examples - [Udemy-workout-timer](https://github.com/agpavlik/Udemy-workout-timer)
+
 ---
 
 #### 🚩 useEffect example with keypress<a name="30"></a>
@@ -3011,7 +3019,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<SpinnerFullPage />}>
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route index element={<Homepage />} />
           <Route path="product" element={<Product />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="login" element={<Login />} />
@@ -3022,9 +3030,8 @@ function App() {
 }
 ```
 
-### 📒 Redux <a name="55"></a>
-
 ![](79.png)
-![](80.png)
-![](81.png)
-![](82.png)
+
+---
+
+### 📒 Redux <a name="55"></a>
