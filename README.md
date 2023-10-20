@@ -3042,3 +3042,9 @@ function App() {
 ![](86.png)
 ![](87.png)
 ![](88.png)
+
+---
+
+#### 🚩 Redux examples <a name="56"></a>
+
+Example - [Udemy-Pizzolino](https://github.com/agpavlik/Pizzolino)
