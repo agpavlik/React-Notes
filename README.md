@@ -3038,13 +3038,17 @@ function App() {
 ### 📒 Redux <a name="55"></a>
 
 ![](83.png)
-![](84.png)
+Redux is actually quite similar to combining the Context API with the useReducer hook. In fact, many developers even say that the Context API is a replacement for Redux.
+Now Redux has a long history and so today, there are basically two versions of Redux. So two different ways of writing Redux applications, but which are totally compatible with each other. We have the classic `Redux` and we have more modern way of writing Redux with `Redux Toolkit`.
 ![](85.png)
 ![](86.png)
 ![](87.png)
-![](88.png)
 
-#### Th Redux DevTools
+`State slices concept` - organize application based features.
+
+#### Redux Toolkit
+
+#### Thunks
 
 #### Redux vs Context API
 
@@ -3052,4 +3056,127 @@ function App() {
 
 #### 🚩 Redux examples <a name="56"></a>
 
-Example - [Udemy-Pizzolino](https://github.com/agpavlik/Pizzolino)
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+
+```javascript
+import { combineReducers, createStore } from "redux";
+
+const initialStateAccount = {
+  balance: 0,
+  loan: 0,
+  loanPurpose: "",
+};
+
+const initialStateCustomer = {
+  fullName: "",
+  nationalID: "",
+  createdAt: "",
+};
+
+// 1 step - Create reducer function
+function accountReducer(state = initialStateAccount, action) {
+  switch (action.type) {
+    case "account/deposit":
+      return { ...state, balance: state.balance + action.payload };
+    case "account/withdraw":
+      return { ...state, balance: state.balance - action.payload };
+    case "account/requestLoan":
+      if (state.loan > 0) return state;
+      return {
+        ...state,
+        loan: action.payload.amount,
+        loanPurpose: action.payload.purpose,
+        balance: state.balance + action.payload.amount,
+      };
+    case "account/payLoan":
+      return {
+        ...state,
+        loan: 0,
+        loanPurpose: "",
+        balance: state.balance - state.loan,
+      };
+    // In case that the reducer receives an action that it doesn't know about it will simply return the original state back. So the state will simply not be updated but there also won't be an error.
+    default:
+      return state;
+  }
+}
+
+function customerReducer(state = initialStateCustomer, action) {
+  switch (action.type) {
+    case "customer/createCustomer":
+      return {
+        ...state,
+        fullName: action.payload.fullName,
+        nationalID: action.payload.nationalID,
+        createdAt: action.payload.createdAt,
+      };
+    case "customer/updateName":
+      return { ...state, fullName: action.payload };
+    default:
+      return state;
+  }
+}
+
+// 4 step - Combine all the reducers
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
+});
+
+// 2 step - Create store function with reducer or rootReducer
+const store = createStore(rootReducer);
+
+// store.dispatch({ type: "account/deposit", payload: 500 });
+// store.dispatch({ type: "account/withdraw", payload: 200 });
+// store.dispatch({
+//   type: "account/requestLoan",
+//   payload: { amount: 1000, purpose: "Buy a car" },
+// });
+// store.dispatch({ type: "account/payLoan" });
+
+// 3 step - Build action creator functions. It recreate all the aforementioned dispatch.
+function deposit(amount) {
+  return { type: "account/deposit", payload: amount };
+}
+
+function withdraw(amount) {
+  return { type: "account/withdraw", payload: amount };
+}
+
+function requestLoan(amount, purpose) {
+  return {
+    type: "account/requestLoan",
+    payload: { amount, purpose },
+  };
+}
+
+function payLoan() {
+  return { type: "account/payLoan" };
+}
+
+store.dispatch(deposit(500));
+store.dispatch(withdraw(200));
+store.dispatch(requestLoan(1000, "Buy a car"));
+store.dispatch(payLoan());
+// console.log(store.getState());
+
+function createCustomer(fullName, nationalID) {
+  return {
+    type: "customer/createCustomer",
+    payload: {
+      fullName,
+      nationalID,
+      createdAt: new Date().toISOString(),
+    },
+  };
+}
+
+function updateName(fullName) {
+  return { type: "customer/updateName", payload: fullName };
+}
+
+store.dispatch(createCustomer("Jone Snow", "4657637782"));
+console.log(store.getState());
+store.dispatch(updateName("Dan Rain"));
+console.log(store.getState());
+```
