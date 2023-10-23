@@ -3044,6 +3044,10 @@ function App() {
 ![](87.png)
 ![](88.png)
 
+#### Th Redux DevTools
+
+#### Redux vs Context API
+
 ---
 
 #### 🚩 Redux examples <a name="56"></a>
