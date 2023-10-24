@@ -58,7 +58,7 @@
 - [Optimizing context re-render. Code splitting. Lazy loading.](#54)
 - [Redux](#55)
   - [Redux examples](#56)
-- [React Query]()
+- [React Query](#57)
 
 ---
 
