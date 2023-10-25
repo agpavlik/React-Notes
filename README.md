@@ -57,7 +57,7 @@
   - [memo, useMemo, useCallback examples](#53)
 - [Optimizing context re-render. Code splitting. Lazy loading.](#54)
 - [Redux](#55)
-  - [Redux examples](#56)
+  - [Redux example in isolation](#56)
 - [React Query](#57)
 
 ---
@@ -3044,7 +3044,101 @@ Now Redux has a long history and so today, there are basically two versions of R
 ![](86.png)
 ![](87.png)
 
+#### State slice concept
+
 `State slices concept` - organize application based features.
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit"; // it automaticaly create action creators, right reducer easer, mutate state insade reducers
+```
+
+#### Connecting Redux with React
+
+Connect Redux store with React application through package `npm i react-redux`. Then use a provider component with store in index.js:
+
+```javascript
+import { Provider } from "react-redux";
+import store from "./store";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>;
+  </React.StrictMode>
+```
+
+In order to read data from the Redux store, all we have to do is to use the use selector hook that is provided by React Redux.
+
+```javascript
+import { useSelector } from "react-redux";
+
+function Customer() {
+  const customer = useSelector((store) => store.customer.fullName);
+
+  return <h2>Welcome, {customer}</h2>;
+}
+
+---
+import accountReducer from "./features/accounts/accountSlice";
+import customerReducer from "./features/customers/customerSlice";
+import { configureStore } from "@reduxjs/toolkit";
+
+const store = configureStore({
+  reducer: {
+    account: accountReducer,
+    customer: customerReducer,
+  },
+});
+```
+
+#### Dispatch Actions from React App
+
+Let's learn how to dispatch actions to the Redux store from within React components. We get access to the dispatch function by using the `useDispatch` hook.
+
+```javascript
+import { useState } from "react";
+import { useDispatch } from "react-redux"; // import hook
+import { createCustomer } from "./customerSlice";
+
+function Customer() {
+  const [fullName, setFullName] = useState("");
+  const [nationalId, setNationalId] = useState("");
+
+  const dispatch = useDispatch(); //called the dispatch method
+
+  // dispatch action in the event handler
+  function handleClick() {
+    if (!fullName || !nationalId) return;
+    dispatch(createCustomer(fullName, nationalId));
+  }
+
+  return (
+    <div>
+      <h2>Create new customer</h2>
+      <div className="inputs">
+        <div>
+          <label>Customer full name</label>
+          <input
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>National ID</label>
+          <input
+            value={nationalId}
+            onChange={(e) => setNationalId(e.target.value)}
+          />
+        </div>
+        <button onClick={handleClick}>Create new customer</button>
+      </div>
+    </div>
+  );
+}
+```
 
 #### Redux Toolkit
 
@@ -3054,7 +3148,7 @@ Now Redux has a long history and so today, there are basically two versions of R
 
 ---
 
-#### 🚩 Redux examples <a name="56"></a>
+#### 🚩 Redux example in isolation<a name="56"></a>
 
 Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
 
