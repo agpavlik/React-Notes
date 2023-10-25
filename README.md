@@ -3066,8 +3066,10 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-    </Provider>;
+    </Provider>
+    ;
   </React.StrictMode>
+);
 ```
 
 In order to read data from the Redux store, all we have to do is to use the use selector hook that is provided by React Redux.
@@ -3170,9 +3172,20 @@ function Customer() {
 }
 ```
 
-#### Redux Toolkit
+#### Redux MiddleWare & Thunks
 
-#### Thunks
+![](88.png)
+Let's say that we wanted to make an asynchronous call to some API. So where could we actually do that in Redux? Well, we can definitely not make the API call inside a reducer because reducers need to be pure functions with no side effects.
+Therefore, any asynchronous operations like that API call need to happen outside a reducer. So instead, should we maybe fetch the data inside the component and then dispatch an action to the store with that received data? Well, that is actually possible, but it's not an ideal solution and the reason for that is that we usually want to keep our components clean and free of data fetching and we also want our important data fetching logic encapsulated somewhere, so all in one place and not have it spread all over the application. Therefore, fetching data inside components is not ideal.
+
+But if not in the store and not in the components, then where do we perform asynchronous actions? Well, that's where `Middleware` comes into action. `Middleware` is basically a function that sits between the dispatching and the store. This means that a Middleware allows developers to run some code after dispatching an action, but before that action reaches the reducer in the store. And therefore, this is the perfect place for our asynchronous API call, as well as other operations, such as setting timers, logging to the console, or even pausing and canceling the action altogether. So in essence, Middleware is the go-to place for side effects in the Redux cycle.
+
+We can write Middleware functions ourselves, but usually, we just use some third party package.
+And in the case of asynchronous operations, the most popular Middleware in Redux is called `Redux Thunk`. Let's see how Thunks work by analyzing what happens to this action that we have seen before. So now that we have this Thunk Middleware in place, the action will no longer be immediately dispatched, but will first get into the Middleware. So into the Thunk, in this case. Then we can start fetching some data inside the Thunk, but it could also be some other asynchronous operation. But let's stick to data fetching here. Now, as soon as the data arrives, we place it into the actions payload and then we finally dispatch the action into the store, where the state will then immediately get updated.
+So basically, the Thunk allows Redux to wait before dispatching the fetch data into the store. Or in other words, we have used the Thunk in order to defer dispatching into the future. So to the point in which the data that we need has actually arrived. All right, but this is, of course, a lot easier to understand in practice, and so let's implement this in our application now.
+![](89.png)
+
+#### Redux Toolkit
 
 #### Redux vs Context API
 
