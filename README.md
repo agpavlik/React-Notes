@@ -3094,9 +3094,38 @@ const store = configureStore({
 });
 ```
 
+#### Old way to connect Components to Redux
+
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+
+```javascript
+import { connect } from "react-redux";
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
+}
+
+function BalanceDisplay({ balance }) {
+  return <div className="balance">{formatCurrency(balance)}</div>;
+}
+
+function mapStateToProps(state) {
+  //return an object in which we can define the name of a prop that our component should receive.
+  return {
+    balance: state.account.balance,
+  };
+}
+//The React Redux library exports connect function. And so this connect function takes in another function which then in turn will return a new function which will then accept our component as a new argument.
+export default connect(mapStateToProps)(BalanceDisplay);
+```
+
 #### Dispatch Actions from React App
 
 Let's learn how to dispatch actions to the Redux store from within React components. We get access to the dispatch function by using the `useDispatch` hook.
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
 
 ```javascript
 import { useState } from "react";
@@ -3107,7 +3136,8 @@ function Customer() {
   const [fullName, setFullName] = useState("");
   const [nationalId, setNationalId] = useState("");
 
-  const dispatch = useDispatch(); //called the dispatch method
+  //called the dispatch method
+  const dispatch = useDispatch();
 
   // dispatch action in the event handler
   function handleClick() {
