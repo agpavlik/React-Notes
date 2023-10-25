@@ -3185,7 +3185,69 @@ And in the case of asynchronous operations, the most popular Middleware in Redux
 So basically, the Thunk allows Redux to wait before dispatching the fetch data into the store. Or in other words, we have used the Thunk in order to defer dispatching into the future. So to the point in which the data that we need has actually arrived. All right, but this is, of course, a lot easier to understand in practice, and so let's implement this in our application now.
 ![](89.png)
 
-#### Redux Toolkit
+Let's now use Redux Thunks to implement a feature where the user can deposit money into the account in a foreign currency, which will then be converted by calling an external API.
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+
+```javascript
+//index.js
+//In order to use this middleware, we need to follow three steps. First, we install the middleware package (npm i redux-thunk). Then we apply that middleware to our store. And finally, we use the middleware in our action creator functions.
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import accountReducer from "./features/accounts/accountSlice";
+import customerReducer from "./features/customers/customerSlice";
+import thunk from "redux-thunk"; //import thunk function
+import { composeWithDevTools } from "redux-devtools-extension";
+
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
+});
+// Apply to our store - we told our store, that we want to use the thunk middleware in our application.
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
+
+---
+//AccountOperations.js
+  function handleDeposit() {
+    if (!depositAmount) return;
+    dispatch(deposit(depositAmount, currency));//add currency
+    setDepositAmount("");
+    setCurrency("");//clear the currency
+  }
+
+---
+// accountSlice.js
+// for deposit use converter function
+// Besides accepting the amount, we now also will need to accept the currency.
+export function deposit(amount, currency) {
+  // If the currency already is US dollars, then there's nothing to convert. And so then we can simply return the object.
+  if (currency === "USD") return { type: "account/deposit", payload: amount };
+  // if return a function redux knows if it is a thunk
+  return async function (dispatch, getState) {
+    //Let's also show the user some loading indicator.
+    dispatch({ type: "account/convertingCurrency" });
+
+    // API call if currency is different
+    const res = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
+    );
+    const data = await res.json();
+    const converted = data.rates.USD;
+    // return action
+    dispatch({ type: "account/deposit", payload: converted });
+  };
+}
+```
+
+#### Redux DevTools
+
+Redux comes with amazing developer tools. Installing the Redux dev tools is a three step process. First we need to install the Google Chrome extension (Redux DevTools). Then next up we actually need to also install the corresponding NPM package (npm i redux-devtools-extension). It gives us - import { composeWithDevTools } from "redux-devtools-extension". And we need we need to wrap the afforementioned apply middleware in the compost with dev tools. And in google you will see a new tab for Redux.
+
+#### Redux Toolkit (RTK)
+
+It is the modern way of writing Redux.
+![](90.png)
 
 #### Redux vs Context API
 
