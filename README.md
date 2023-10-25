@@ -3084,16 +3084,18 @@ function Customer() {
 }
 
 ---
+import { combineReducers, createStore } from "redux";
 import accountReducer from "./features/accounts/accountSlice";
 import customerReducer from "./features/customers/customerSlice";
-import { configureStore } from "@reduxjs/toolkit";
 
-const store = configureStore({
-  reducer: {
-    account: accountReducer,
-    customer: customerReducer,
-  },
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
 });
+const store = createStore(
+  rootReducer
+);
+
 ```
 
 #### Old way to connect Components to Redux
@@ -3248,6 +3250,27 @@ Redux comes with amazing developer tools. Installing the Redux dev tools is a th
 
 It is the modern way of writing Redux.
 ![](90.png)
+
+Install - `npm i @reduxjs/toolkit`
+
+```javascript
+import accountReducer from "./features/accounts/accountSlice";
+import customerReducer from "./features/customers/customerSlice";
+import { configureStore } from "@reduxjs/toolkit"; // use the configure store method.
+//So basically, configure store does a lot of things automatically for us. It automatically will combine our reducers, it will automatically add the Thunk middleware, and it will even automatically set up the developer tools.
+
+const store = configureStore({
+  reducer: {
+    account: accountReducer,
+    customer: customerReducer,
+  },
+});
+
+export default store;
+```
+
+React Toolkit can also help us with writing the state slices themselves.
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank) - Account Slice.
 
 #### Redux vs Context API
 
