@@ -3250,7 +3250,6 @@ Redux comes with amazing developer tools. Installing the Redux dev tools is a th
 
 It is the modern way of writing Redux.
 ![](90.png)
-
 Install - `npm i @reduxjs/toolkit`
 
 ```javascript
@@ -3273,6 +3272,9 @@ React Toolkit can also help us with writing the state slices themselves.
 Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank) - Account Slice.
 
 #### Redux vs Context API
+
+![](91.png)
+![](92.png)
 
 ---
 
@@ -3402,3 +3404,13 @@ console.log(store.getState());
 store.dispatch(updateName("Dan Rain"));
 console.log(store.getState());
 ```
+
+---
+
+### 📒 ... <a name="..."></a>
+
+---
+
+#### 🚩 ... <a name="..."></a>
+
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
