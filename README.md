@@ -59,6 +59,7 @@
 - [Redux](#55)
   - [Redux example in isolation](#56)
 - [React Query](#57)
+- [How to plan and build a React Application](#100)
 
 ---
 
@@ -3407,10 +3408,19 @@ console.log(store.getState());
 
 ---
 
-### 📒 ... <a name="..."></a>
+### 📒 React Query <a name="57"></a>
 
 ---
 
 #### 🚩 ... <a name="..."></a>
 
 Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+
+---
+
+### 📒 How to plan and build a React Application <a name=""></a>
+
+![](93.png)
+![](94.png)
+
+---
