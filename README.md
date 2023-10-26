@@ -2439,8 +2439,6 @@ Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./ui/Home";
 import Menu from "./features/menu/Menu";
-import Cart from "./features/cart/Cart";
-import CreateOrder from "./features/order/CreateOrder";
 import Order from "./features/order/Order";
 
 //Function where we define all routes, and we do that by passing in an array of objects where each object is one route.
@@ -2454,14 +2452,6 @@ const router = createBrowserRouter([
     element: <Menu />,
   },
   {
-    path: "/cart",
-    element: <Cart />,
-  },
-  {
-    path: "/order/new",
-    element: <CreateOrder />,
-  },
-  {
     path: "/order/:orderId",
     element: <Order />,
   },
@@ -2472,6 +2462,86 @@ function App() {
 }
 
 export default App;
+```
+
+---
+
+#### 🚩 React Router v.6.4 - Layout <a name="462"></a>
+
+The tasc is to create AppLayout component which will be used as the parent route of every single other route in application.
+
+```javascript
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./ui/Home";
+import Menu from "./features/menu/Menu";
+import Order from "./features/order/Order";
+import AppLayout from "./ui/AppLayout";
+
+// The way that we define nested routes, is by defining the children property. And children then accepts another array of routes. We don't need any path in AppLayout.
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home /> },
+      {
+        path: "/menu",
+        element: <Menu />},
+      {
+        path: "/order/:orderId",
+        element: <Order />,
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+
+---
+// AppLayout
+import { Outlet} from 'react-router-dom';
+import CartOverview from '../features/cart/CartOverview';
+import Header from './Header';
+
+// Use Outlet component is used for rendering the content of a nested route inside another route. Outlet is used within the parent route element to indicate where a child route element should be rendered.
+
+function AppLayout() {
+  return (
+      <Header />
+        <main>
+          <Outlet />
+        </main>
+      <CartOverview />
+    </div>
+  );
+}
+
+export default AppLayout;
+
+---
+
+import { Link } from 'react-router-dom';
+import SearchOrder from '../features/order/SearchOrder';
+import Username from '../features/user/Username';
+
+function Header() {
+  return (
+    <header>
+      <Link to="/">
+        Pizzolino
+      </Link>
+      <SearchOrder />
+      <Username />
+    </header>
+  );
+}
+
+export default Header;
 ```
 
 ---
