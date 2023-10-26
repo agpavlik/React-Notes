@@ -50,6 +50,8 @@
   - [React Router example with storing state in the URL & reading a Query String](#45)
   - [React Router example with Navigation](#46)
 - [React Router v.6.4](#461)
+  - [React Router v.6.4 - Layout example](#462)
+  - [React Router v.6.4 - Example with loading](#463)
 - [Context API](#47)
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
@@ -2466,7 +2468,7 @@ export default App;
 
 ---
 
-#### 🚩 React Router v.6.4 - Layout <a name="462"></a>
+#### 🚩 React Router v.6.4 - Layout example<a name="462"></a>
 
 The tasc is to create AppLayout component which will be used as the parent route of every single other route in application.
 
@@ -2542,6 +2544,92 @@ function Header() {
 }
 
 export default Header;
+```
+
+---
+
+#### 🚩 React Router v.6.4 - Example with loading<a name="463"></a>
+
+Let's learn about React Router's powerful new data loading feature which is called `loaders`. So the idea behind a loader is that somewhere in our code we create a function that fetches some data from an API. We then provide that loader function to one of our routes and that route will then fetch that data as soon as the application goes to that route. And then in the end, once the data has arrived, it will be provided to the page component itself using a custom hook.
+
+So, we do this in three steps. First - we create a loader.
+Second - we provide the loader. Third - we provide the data to the page.
+This data loader can be placed anywhere in our code base but the convention seems to be to place the loader for the data of a certain page inside the file of that page.
+
+```javascript
+
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./ui/Home";
+// 2 step - connect the loader function to the route. Rename loader because there are several of them.
+import Menu, { loader as menuLoader } from "./features/menu/Menu";
+import Order, { loader as orderLoader } from "./features/order/Order";
+import AppLayout from "./ui/AppLayout";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      { path: "/",
+        element: <Home /> },
+      {
+        path: "/menu",
+        element: <Menu />,
+        // specify the loader property
+        loader: menuLoader }
+      {
+        path: "/order/:orderId",
+        element: <Order />,
+        loader: orderLoader
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+
+---
+// menu.js
+
+// 3 step - get data into the component. For that, we can use a custom hook, which is called useLoaderData.
+import { useLoaderData } from 'react-router-dom';
+import { getMenu } from '../../services/apiRestaurant';
+import MenuItem from './MenuItem';
+
+function Menu() {
+  const menu = useLoaderData();
+
+  return (
+    <ul>
+      {menu.map((pizza) => (
+        <MenuItem pizza={pizza} key={pizza.id} />
+      ))}
+    </ul>
+  );
+}
+
+// 1 step - The convention here is to just call this function a loader. And so then here, this function needs to fetch the data and then return it.
+export async function loader() {
+  const menu = await getMenu();
+  return menu;
+}
+
+export default Menu;
+
+---
+
+// apiRestaurant.js
+const API_URL = 'https://react-fast-pizza-api.onrender.com/api';
+
+export async function getMenu() {
+  const res = await fetch(`${API_URL}/menu`);
+  if (!res.ok) throw Error('Failed getting menu');
+  const { data } = await res.json();
+  return data;
+}
 ```
 
 ---
