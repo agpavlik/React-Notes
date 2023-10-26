@@ -49,6 +49,7 @@
   - [React Router example & index route & Outlet element](#44)
   - [React Router example with storing state in the URL & reading a Query String](#45)
   - [React Router example with Navigation](#46)
+- [React Router v.6.4](#461)
 - [Context API](#47)
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
@@ -2424,6 +2425,62 @@ function Form() {
   )
 }
 
+```
+
+---
+
+### 📒 React Router v.6.4 <a name="461"></a>
+
+React version 6.4 introduced a whole new way of defining routes and of working with React Router. So from now on we can use some powerful mechanisms inside React Router for fetching data into pages and for submitting data using forms, so all within React Router.
+
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
+
+```javascript
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./ui/Home";
+import Error from "./ui/Error";
+import Menu, { loader as menuLoader } from "./features/menu/Menu";
+import Cart from "./features/cart/Cart";
+import CreateOrder, {
+  action as createOrderAction,
+} from "./features/order/CreateOrder";
+import Order, { loader as orderLoader } from "./features/order/Order";
+import AppLayout from "./ui/AppLayout";
+
+//Function where we define all routes, and we do that by passing in an array of objects where each object is one route.
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
+      { path: "/", element: <Home /> },
+      {
+        path: "/menu",
+        element: <Menu />,
+        loader: menuLoader,
+        errorElement: <Error />,
+      },
+      { path: "/cart", element: <Cart /> },
+      {
+        path: "/order/new",
+        element: <CreateOrder />,
+        action: createOrderAction,
+      },
+      {
+        path: "/order/:orderId",
+        element: <Order />,
+        loader: orderLoader,
+        errorElement: <Error />,
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
 ```
 
 ---
