@@ -51,7 +51,9 @@
   - [React Router example with Navigation](#46)
 - [React Router v.6.4](#461)
   - [React Router v.6.4 - Layout example](#462)
-  - [React Router v.6.4 - Example with loading](#463)
+  - [React Router v.6.4 - Data fetching example](#463)
+  - [React Router v.6.4 - Loading indicator example](#464)
+  - [React Router v.6.4 - Hendling errors example](#465)
 - [Context API](#47)
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
@@ -2472,6 +2474,8 @@ export default App;
 
 The tasc is to create AppLayout component which will be used as the parent route of every single other route in application.
 
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
+
 ```javascript
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./ui/Home";
@@ -2548,13 +2552,15 @@ export default Header;
 
 ---
 
-#### 🚩 React Router v.6.4 - Example with loading<a name="463"></a>
+#### 🚩 React Router v.6.4 - Data fetching example<a name="463"></a>
 
 Let's learn about React Router's powerful new data loading feature which is called `loaders`. So the idea behind a loader is that somewhere in our code we create a function that fetches some data from an API. We then provide that loader function to one of our routes and that route will then fetch that data as soon as the application goes to that route. And then in the end, once the data has arrived, it will be provided to the page component itself using a custom hook.
 
 So, we do this in three steps. First - we create a loader.
 Second - we provide the loader. Third - we provide the data to the page.
 This data loader can be placed anywhere in our code base but the convention seems to be to place the loader for the data of a certain page inside the file of that page.
+
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
 
 ```javascript
 
@@ -2630,6 +2636,59 @@ export async function getMenu() {
   const { data } = await res.json();
   return data;
 }
+```
+
+What we just did here was to implement or to use a render as you fetch strategy because the nice thing about this is that React Router will actually start fetching the data at the same time as it starts rendering the correct route. So these things really happen at the same time, while what we did before using useEffect was always a fetch on render approach. So basically, we rendered the component first, and then after the component was already rendered we would start to fetch the data. And so that would then create so-called data loading waterfalls, but not here.
+
+So here everything really happens at the same time, which is a really nice and really modern thing to do as well. So with this, what we just did, React Router is no longer only responsible for matching component to URLs in the browser but to also provide the data that is necessary for each page.
+
+---
+
+#### 🚩 React Router v.6.4 - Loading indicator example<a name="464"></a>
+
+We want to display a loading spinner between the click and the data actually arriving. In order to be able to display an indicator, we need to know whether this data is actually being loaded. In React Router, we can get access to this by using the `useNavigation` hook. And with this we will be able to see whether the application is currently idle, whether it is loading or submitting. And this information is actually for the entire application, not just for one page.
+
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
+
+```javascript
+import { Outlet, useNavigation } from "react-router-dom";
+import CartOverview from "../features/cart/CartOverview";
+import Header from "./Header";
+import Loader from "./Loader";
+
+function AppLayout() {
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+
+  return (
+    <div className="grid h-screen grid-rows-[auto_1fr_auto]">
+      {isLoading && <Loader />}
+
+      <Header />
+      <div className="overflow-scrool">
+        <main className="mx-auto max-w-3xl">
+          <Outlet />
+        </main>
+      </div>
+
+      <CartOverview />
+    </div>
+  );
+}
+
+export default AppLayout;
+
+---
+function Loader() {
+  return (
+    <div>
+      <div className="loader"></div>
+    </div>
+  );
+}
+
+export default Loader;
+
 ```
 
 ---
