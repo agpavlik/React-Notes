@@ -54,6 +54,8 @@
   - [React Router v.6.4 - Data fetching example](#463)
   - [React Router v.6.4 - Loading indicator example](#464)
   - [React Router v.6.4 - Hendling errors example](#465)
+  - [React Router v.6.4 - Fatching ID example](#466)
+  - [React Router v.6.4 - Data mutation example](#467)
 - [Context API](#47)
   - [Context API example](#48)
   - [Context API example with useReducer](#50)
@@ -2751,6 +2753,54 @@ function Error() {
 }
 
 export default Error;
+```
+
+---
+
+#### 🚩 React Router v.6.4 - Fetching ID example<a name="466"></a>
+
+Since we are now loading data from API, let's also load individual orders. So, basically so that we can implement this other feature here where a user can look up their order based on the ID of that order.
+
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
+
+```javascript
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+function SearchOrder() {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // if there is no query, then just return. But otherwise, what we want to do is to navigate to that page. We use the useNavigate hook and then here we can call navigate to /order/ and then the query.
+    if (!query) return;
+    navigate(`/order/${query}`);
+    setQuery("");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <input
+          placeholder="Search order #"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        ></input>
+      </div>
+    </form>
+  );
+}
+
+export default SearchOrder;
+```
+
+---
+
+#### 🚩 React Router v.6.4 - Data mutation example<a name="467"></a>
+
+```javascript
+
 ```
 
 ---
