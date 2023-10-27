@@ -2693,6 +2693,68 @@ export default Loader;
 
 ---
 
+#### 🚩 React Router v.6.4 - Error handling example<a name="465"></a>
+
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
+
+```javascript
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./ui/Home";
+import Error from "./ui/Error";
+import Menu, { loader as menuLoader } from "./features/menu/Menu";
+import Order, { loader as orderLoader } from "./features/order/Order";
+import AppLayout from "./ui/AppLayout";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
+      { path: "/",
+        element: <Home /> },
+      {
+        path: "/menu",
+        element: <Menu />,
+        loader: menuLoader,
+        errorElement: <Error />},
+      {
+        path: "/order/:orderId",
+        element: <Order />,
+        loader: orderLoader,
+        errorElement: <Error />,
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+
+---
+//
+import { useRouteError } from "react-router-dom";
+import LinkButton from "./LinkButton";
+
+function Error() {
+  const error = useRouteError();
+
+  return (
+    <div>
+      <h1>Something went wrong</h1>
+      <p>{error.data || error.message}</p>
+      <LinkButton to="-1">&lArr; Go back</LinkButton>
+    </div>
+  );
+}
+
+export default Error;
+```
+
+---
+
 ### 📒 Context API <a name="47"></a>
 
 ![](66.png)
