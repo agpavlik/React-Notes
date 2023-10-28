@@ -2799,7 +2799,7 @@ export default SearchOrder;
 
 #### 🚩 React Router v.6.4 - Data mutation example<a name="467"></a>
 
-Let's learn how we can use React Router's actions to write data or to mutate data on the server. So while the `loaders` are to read data, `actions` are used to write data or to mutate data.
+Let's learn how we can use React Router's actions to write data or to mutate data on the server. So while the `loaders` are to read data, `actions` are used to write data or to mutate data. Or in other words, actions allow us to manage this remote server state using action functions and forms that we then wire up to routes
 
 Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
 
