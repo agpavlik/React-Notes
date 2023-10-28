@@ -2799,7 +2799,9 @@ export default SearchOrder;
 
 #### 🚩 React Router v.6.4 - Data mutation example<a name="467"></a>
 
-Let's learn how we can use React Router's actions to write data or to mutate data on the server. So while the `loaders` are to read data, `actions` are used to write data or to mutate data. Or in other words, actions allow us to manage this remote server state using action functions and forms that we then wire up to routes
+Let's learn how we can use React Router's actions to write data or to mutate data on the server. So while the `loaders` are to read data, `actions` are used to write data or to mutate data. Or in other words, actions allow us to manage this remote server state using action functions and forms that we then wire up to routes.
+
+So notice how this entire form right here works completely without any JavaScript and without any onSubmit handlers, for example. So all we have is this form here, and then React Router takes care of the rest. We also didn't have to create any state variables here for each of these input fields, and we didn't even have to create a loading state. So React Router will do all of this automatically without us having to do anything.
 
 Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
 
@@ -2809,12 +2811,6 @@ import { useState } from "react";
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import Button from "../../ui/Button";
-
-// https://uibakery.io/regex-library/phone-number
-const isValidPhone = (str) =>
-  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str
-  );
 
 const fakeCart = [
   {
@@ -2849,31 +2845,33 @@ function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
-  return (
-    <div className="px-4 py-6">
-      <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
+  // 1 step. To make this form work nicely with React Router, we need to replace this with a form component that React Router gives us. Then we also need to specify the method which is going to be a post request. Then we could also specify the action where we could then write the path that this form should be submitted to. (<Form method="POST" action="/order/new">). But this is not going to be necessary, because by default React Router will simply match the closest route.
 
-      {/* <Form method="POST" action="/order/new"> */}
+  return (
+    <div>
+      <h2>Ready to order? Lets go!</h2>
       <Form method="POST">
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">First Name</label>
-          <input type="text" name="customer" required className="input grow" />
+        <div>
+          <label>First Name</label>
+          <input
+            type="text"
+            name="customer"
+            required className="input grow" />
         </div>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Phone number</label>
+        <div>
+          <label>Phone number</label>
           <div className="grow">
-            <input type="tel" name="phone" required className="input w-full" />
-            {formErrors?.phone && (
-              <p className="mt-2 rounded-md p-2 text-xs text-red-700">
-                {formErrors.phone}
-              </p>
-            )}
+            <input
+            type="tel"
+            name="phone" r
+            equired className="input w-full" />
+            {formErrors?.phone && <p>{formErrors.phone}</p>}
           </div>
         </div>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Address</label>
+        <div>
+          <label>Address</label>
           <div className="grow">
             <input
               type="text"
@@ -2884,10 +2882,8 @@ function CreateOrder() {
           </div>
         </div>
 
-        <div className="mb-10 flex items-center gap-5">
+        <div>
           <input
-            className="h-6 w-6 accent-yellow-500 focus:outline-none
-            focus:ring focus:ring-yellow-500 focus:ring-offset-2"
             type="checkbox"
             name="priority"
             id="priority"
@@ -2910,13 +2906,15 @@ function CreateOrder() {
   );
 }
 
+// 2 step. Create action. Whenever this form here will be submitted, behind the scenes, React Router will then call this action function and it will pass in the request that was submitted.
 export async function action({ request }) {
   // get all the data from the Form
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   console.log(data);
 
-  //make the priority true/false instead of on/off
+  // 4 step. Next up we also want to get our cart data here into this action.
+  // Make the priority true/false instead of on/off
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
@@ -2933,13 +2931,47 @@ export async function action({ request }) {
   // return Object if at least one error appear. And no new order is created, so it must be placed before newOrder.
   if (Object.keys(errors).length > 0) return errors;
 
-  // If everything is okay, create new order and redirect
+  // If everything is okay, create new order and redirect.
   const newOrder = await createOrder(order);
 
+  // Inside function we cannot calling useNavigate hook. And so here we need to use another function, which is called `redirect`. this is basically another function that is provided to us by React Router, which basically will just create a new response or a new request. This `redirect` here will actually create that response, which we can see right here.
   return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
+
+---
+
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./ui/Home";
+import CreateOrder, {
+  action as createOrderAction,
+} from "./features/order/CreateOrder";
+import AppLayout from "./ui/AppLayout";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <Home /> },
+      {
+        path: "/order/new",
+        element: <CreateOrder />,
+        // 3 step. Connect action with route.
+        action: createOrderAction,
+      },
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
 ```
 
 ---
@@ -2953,7 +2985,7 @@ export default CreateOrder;
 
 Example - [Udemy-atomic-blog](https://github.com/agpavlik/Udemy-atomic-blog)
 
-```javascript
+````javascript
 import { createContext, useContext, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 
@@ -3042,7 +3074,6 @@ function SearchPosts() {
     />
   );
 }
-```
 
 ---
 
@@ -3219,7 +3250,7 @@ function CitiesProvider({ children }) {
     </CitiesContext.Provider>
   );
 }
-```
+````
 
 ---
 
