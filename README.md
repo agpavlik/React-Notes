@@ -2827,13 +2827,6 @@ const fakeCart = [
     unitPrice: 13,
     totalPrice: 13,
   },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
 ];
 
 function CreateOrder() {
@@ -3965,7 +3958,7 @@ Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
 
 ---
 
-### 📒 How to plan and build a React Application <a name=""></a>
+### 📒 How to plan and build a React Application <a name="100"></a>
 
 ![](93.png)
 ![](94.png)
