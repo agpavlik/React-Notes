@@ -65,7 +65,8 @@
 - [Optimizing context re-render. Code splitting. Lazy loading.](#54)
 - [Redux](#55)
   - [Redux example in isolation](#56)
-- [React Query](#57)
+- [useFetcher hook](#57)
+- [React Query](#58)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -3948,13 +3949,66 @@ console.log(store.getState());
 
 ---
 
-### 📒 React Query <a name="57"></a>
+### 📒 useFetcher hook <a name="57"></a>
+
+Sometimes we need to fetch some data from another route, so basically data that is not associated with current page, but we want to do that without causing a navigation sometimes.
+Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+So, for example, let's say that here in the order page, we wanted to load the menu data again, and we already wrote all the logic for fetching exactly that data, but it is associated to another route. In other words, what we want to do is to use the data from the menu route, but without the user actually going there.
+For that, we can use the `useFetcher hook`. This hook will return something called a `fetcher`. This will load the data, and will store it basically in this fetcher object, and then we can retrieve the data from there when we want. Just like normal page `navigations`, this fetcher can also be in different states.
+
+```javascript
+import { useFetcher } from "react-router-dom";
+
+function Order() {
+  const fetcher = useFetcher();
+
+  useEffect(
+    function () {
+      //Let's only fetch this data if there is no data yet.
+      // By default fetcher is idle.
+      if (!fetcher.data && fetcher.state === "idle") fetcher.load("/menu");
+    },
+    [fetcher]
+  );
+
+  return (
+    <ul>
+      {cart.map((item) => (
+        <OrderItem
+          item={item}
+          key={item.pizzaId}
+          isLoadingIngredients={fetcher.state === 'loading'}
+          //We want to pass in only the array of ingredients. So, we access the entire data at fetcher.data. And, then if that exists, find the menu item that corresponds to this order item. And then just grab the ingridients array.
+          ingredients={
+            fetcher?.data?.find((el) => el.id === item.pizzaId)?.ingredients??[]
+          // An empty array fix the problem with data and join
+          }
+        />
+      ))}
+    </ul>
+  );
+}
+
+---
+
+function OrderItem({ item, isLoadingIngredients, ingredients }) {
+
+  return (
+      <p className="text-sm capitalize italic text-stone-500">
+        {isLoadingIngredients ? 'Loading...' : ingredients.join(', ')}
+      </p>
+  )}
+```
+
+---
+
+### 📒 React Query <a name="58"></a>
 
 ---
 
 #### 🚩 ... <a name="..."></a>
 
-Example - [Udemy-redux-bank](https://github.com/agpavlik/Udemy-redux-bank)
+Example - [Pizzolino](https://github.com/agpavlik/Pizzolino)
 
 ---
 
