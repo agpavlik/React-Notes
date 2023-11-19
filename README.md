@@ -4004,7 +4004,81 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
 
 ### 📒 React Query <a name="58"></a>
 
+`React Query` is essentially a very powerful library for managing remote state, that is basically stored on a server and that we need to load into our application. Many developers even describe React Query as being the data fetching library that React itself is missing.
+
+The most fundamental thing about React Query is that all remote state is `cached`, which means that the fetched data will be stored in order to be reused in different points of the application.
+
+## ![](95.png)
+
+The idea behind integrating React Query into our application is very similar with Context API or with Redux. First we create a place where the data basically lives and then, second, we provide that to the application.
+
+The most important function that we're going to use all the time is called the `useQuery custom hook`. We need to pass in an object with two things. First, the queryKey. This will uniquely identify this data that we're going to query here. This can be a complex array, or it can just be an array with a string, but it needs to be an array. The second is the query function, which, is responsible for actually querying, so basically for fetching the data from the API. What is important is that the function needs to return a promise.
+
+Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
+
+```javascript
+// Cabins.jsx
+
+import Heading from "../ui/Heading";
+import Row from "../ui/Row";
+import CabinTable from "../features/cabins/CabinTable";
+
+function Cabins() {
+
+  return (
+    <>
+      <Row type="horizontal">
+        <Heading as="h1">All cabins</Heading>
+        <p>Filter / Sort</p>
+      </Row>
+
+      <Row>
+        <CabinTable />
+      </Row>
+    </>
+  );
+}
+
+export default Cabins;
+
 ---
+// CabinTable.jsx
+
+// The most important function that we're going to use all the time is called the `useQuery custom hook`. We need to pass in an object with two things. First, the queryKey. This will uniquely identify this data that we're going to query here. This can be a complex array, or it can just be an array with a string, but it needs to be an array. The second is the query function, which, is responsible for actually querying, so basically for fetching the data from the API. What is important is that the function needs to return a promise.
+import { getCabins } from "../../services/apiCabins";
+import { useQuery } from "@tanstack/react-query";
+
+function CabinTable() {
+  useQuery({
+    queryKey: ["cabin"],
+    // In the most simple form, we could, for example, use the fetch API here, and then do some request to some URL here.
+    // queryFn: fetch ('...')
+    // However, instead, we will use the function that we already created - getCabins.
+    queryFn: getCabins
+  });
+
+  return <div>Table</div>;
+}
+
+export default CabinTable;
+
+---
+// apiCabins.js
+
+// getCabins function here is an async function, and therefore it returns a promise. And that promise, when resolved, will return data.
+
+export async function getCabins() {
+  const { data, error } = await supabase.from("cabins").select("*");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Cabins could not be loaded");
+  }
+
+  return data;
+}
+
+```
 
 #### 🚩 ... <a name="..."></a>
 
