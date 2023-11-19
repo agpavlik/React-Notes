@@ -4012,8 +4012,6 @@ The most fundamental thing about React Query is that all remote state is `cached
 
 The idea behind integrating React Query into our application is very similar with Context API or with Redux. First we create a place where the data basically lives and then, second, we provide that to the application.
 
-The most important function that we're going to use all the time is called the `useQuery custom hook`. We need to pass in an object with two things. First, the queryKey. This will uniquely identify this data that we're going to query here. This can be a complex array, or it can just be an array with a string, but it needs to be an array. The second is the query function, which, is responsible for actually querying, so basically for fetching the data from the API. What is important is that the function needs to return a promise.
-
 Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
 
 ```javascript
@@ -4047,9 +4045,16 @@ export default Cabins;
 // The most important function that we're going to use all the time is called the `useQuery custom hook`. We need to pass in an object with two things. First, the queryKey. This will uniquely identify this data that we're going to query here. This can be a complex array, or it can just be an array with a string, but it needs to be an array. The second is the query function, which, is responsible for actually querying, so basically for fetching the data from the API. What is important is that the function needs to return a promise.
 import { getCabins } from "../../services/apiCabins";
 import { useQuery } from "@tanstack/react-query";
+import Spinner from "../../ui/Spinner";
+import CabinRow from "./CabinRow";
 
 function CabinTable() {
-  useQuery({
+//  destructure three important pieces of data.
+  const {
+    isLoading,
+    data: cabins,
+    error,
+  } = useQuery({
     queryKey: ["cabin"],
     // In the most simple form, we could, for example, use the fetch API here, and then do some request to some URL here.
     // queryFn: fetch ('...')
@@ -4057,11 +4062,32 @@ function CabinTable() {
     queryFn: getCabins
   });
 
-  return <div>Table</div>;
+  if (isLoading) return <Spinner />;
+
+  // Give elements here the 'role' of a row, and the role of a table.
+  // So this is just to make the HTML a bit more accessible, because
+  // this will actually function as a table, but we do implement it
+  // not using the table HTML element, but instead using divs and
+  // this header here. But by specifying the role, we then make sure
+  // that the browser knows that this actually should be a table and a row.
+  return (
+    <Table role="table">
+      <TableHeader role="row">
+        <div></div>
+        <div>Cabin</div>
+        <div>Capacity</div>
+        <div>Price</div>
+        <div>Discount</div>
+        <div></div>
+      </TableHeader>
+      {cabins.map((cabin) => (
+        <CabinRow cabin={cabin} key={cabin.id} />
+      ))}
+    </Table>
+  );
 }
 
 export default CabinTable;
-
 ---
 // apiCabins.js
 
@@ -4077,6 +4103,30 @@ export async function getCabins() {
 
   return data;
 }
+
+---
+// CabinRow.jsx
+
+import styled from "styled-components";
+import { formatCurrency } from "../../utils/helpers";
+
+function CabinRow({ cabin }) {
+  const { name, maxCapacity, regularPrice, discount, image } = cabin;
+
+  return (
+    <TableRow role="row">
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests </div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>{formatCurrency(discount)}</Discount>
+      <button>Delete</button>
+    </TableRow>
+  );
+}
+
+export default CabinRow;
+
 
 ```
 
