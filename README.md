@@ -4012,9 +4012,9 @@ The most fundamental thing about React Query is that all remote state is `cached
 
 The idea behind integrating React Query into our application is very similar with Context API or with Redux. First we create a place where the data basically lives and then, second, we provide that to the application.
 
-Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
-
 #### Fetch and store data example
+
+Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
 
 ```javascript
 // Cabins.jsx
@@ -4133,9 +4133,12 @@ export default CabinRow;
 
 #### Mutate (delete) data example
 
+Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
+
 ```javascript
 // apiCabins.js
 
+// Function deletes cabin from the data
 export async function deleteCabin(id) {
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
   if (error) {
@@ -4145,6 +4148,54 @@ export async function deleteCabin(id) {
 
   return data;
 }
+---
+// CabinRow.jsx
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins";
+
+function CabinRow({ cabin }) {
+  const {
+    id: cabinId,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+  } = cabin;
+
+  const queryClient = useQueryClient();
+
+// The way we do mutations is not by doing "useQuery," but "useMutation." And then we need to paste in an object. The first element should be the "mutationFn." This is the function that React Query will call, and so let's make this an arrow function, that will receive the ID and will then call the "deleteCabin" function that we just created with exactly that ID. And then what we also get is a "mutate" function. And so this is then basically a callback function that we can connect with the button in this case. All we have to do now is on the "onClick" prop to call this "mutate" function with the current ID. Let's also use this "isLoading" state to disable this button.
+
+  const { isLoading: isDeleting, mutate } = useMutation({
+    mutationFn: (id) => deleteCabin(id),
+
+// We tell React Query what to do as soon as the mutation was successful. We basically want to re-fetch the data here. And the way this works in React Query, is by invalidating the cache. As soon as we invalidate this cache, data with this key will immediately fetch again. The way that we do this in our code, so of course we don't want our users to click there, is to get the Query client and then call "invalidateQueries". For that we have a special hook called "useQueryClient."
+    onSuccess: () => {
+      alert("Cabin successfully deleted");
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+    },
+// Besides the "onSuccess" handler, we also have the "onError" handler. This one receives the error as an argument and then here we can do anything we want with this. So let's "alert," in this case, the "err.message."
+    onError: (err) => alert(err.message),
+  });
+
+  return (
+    <TableRow role="row">
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests </div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>{formatCurrency(discount)}</Discount>
+      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+        Delete
+      </button>
+    </TableRow>
+  );
+}
+
+export default CabinRow;
+
 ```
 
 ---
