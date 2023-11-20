@@ -4014,6 +4014,8 @@ The idea behind integrating React Query into our application is very similar wit
 
 Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
 
+#### Fetch and store data example
+
 ```javascript
 // Cabins.jsx
 
@@ -4127,8 +4129,25 @@ function CabinRow({ cabin }) {
 
 export default CabinRow;
 
-
 ```
+
+#### Mutate (delete) data example
+
+```javascript
+// apiCabins.js
+
+export async function deleteCabin(id) {
+  const { data, error } = await supabase.from("cabins").delete().eq("id", id);
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin could not be deleted");
+  }
+
+  return data;
+}
+```
+
+---
 
 #### 🚩 ... <a name="..."></a>
 
