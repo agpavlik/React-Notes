@@ -68,6 +68,7 @@
 - [useFetcher hook](#57)
 - [React Query](#58)
 - [React Hook Form](#59)
+- [Advanced React Patterns](#60)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -4299,6 +4300,30 @@ function CreateCabinForm() {
 
 export default CreateCabinForm;
 ```
+
+---
+
+### 📒 Advanced React Patterns <a name="60"></a>
+
+This section is all about advanced React patterns that are used by senior React engineers to make components even more reusable and flexible.
+
+There are a quick overview of how we can reuse different types of code in React and how these advanced patterns that we're gonna talk about fit into the picture.
+
+![](96.png)
+
+In React, we basically might want to reuse two big types of code We can either reuse pieces of UI, or we can reuse some stateful logic, that contains at least one React hook. We already know, to reuse pieces of the UI, we use components and props. We can even pass in content or other components into components, simply by using the slightly more advanced, but extremely useful children prop. Moving on to reusing stateful logic, we can do so simply by writing our own custom hooks.
+
+Now, there's also a third category, which is simply for reusing some non-stateful logic.
+
+Okay, what if we need to reuse visuals and stateful logic at the same time in some more advanced ways? Well, that's where more advanced patterns come into play.
+
+So one of these advanced patterns that developers came up with is the so-called `render props pattern`. And I say pattern because these are not things that are baked into React, so they are not React features. Instead, they are simply clever ways of using React that have emerged over time in order to solve certain problems. But anyway, with render props, the user of a component has complete control over what the component actually renders by passing in a function as a prop. This function tells the component what and how to render. And the beauty of this is that with this pattern, we can reuse logic that has some UI, so some JSX attached to it, while giving the component the ability to receive even more JSX. This sounds a bit like the same thing as the children prop, but this is quite different actually.
+
+This pattern was super common in the old days before React hooks, because it was the only way of sharing stateful logic across different components. But today for that, we already have custom hooks. However, it's still very useful and very important for certain situations in which we really do want to reuse some logic that has some UI attached to it.
+
+The second advanced pattern that we will talk about, we have the `compound component pattern`. Compound means that we will have multiple components that play together in order to create one big, let's call it `super component`, which is then the compound component. And this pattern allows us to build extremely self-contained components that need to manage their own state internally, without that state being necessary inside the parent component that uses the compound component.
+
+There are even more patterns than these two, but if you know how to use, and when to use these two, that will already set you apart from most of the other React developers out there.
 
 ---
 
