@@ -69,6 +69,7 @@
 - [React Query](#58)
 - [React Hook Form](#59)
 - [Advanced React Patterns](#60)
+  - [The Render Props Pattern](#61)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -4324,6 +4325,14 @@ This pattern was super common in the old days before React hooks, because it was
 The second advanced pattern that we will talk about, we have the `compound component pattern`. Compound means that we will have multiple components that play together in order to create one big, let's call it `super component`, which is then the compound component. And this pattern allows us to build extremely self-contained components that need to manage their own state internally, without that state being necessary inside the parent component that uses the compound component.
 
 There are even more patterns than these two, but if you know how to use, and when to use these two, that will already set you apart from most of the other React developers out there.
+
+---
+
+#### 🚩 The Render Props Pattern <a name="61"></a>
+
+Example - [Udemy-render-props-pattern](https://github.com/agpavlik/Udemy-render-props-pattern)
+
+The `render prop pattern` is all about passing in a prop called render, which is a function that a component uses to know what it should render and how to do it.
 
 ---
 
