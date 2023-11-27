@@ -72,6 +72,7 @@
   - [Render Props Pattern](#61)
   - [Higher-Order Component](#62)
   - [Compound Component Pattern](#63)
+  - [React Portal](#64)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -4353,6 +4354,34 @@ Example - [Udemy-compound-component-pattern](https://github.com/agpavlik/Udemy-c
 The idea of a `Compound Component` is that we can create a set of related components that together achieve a common and useful task, for example, implementing a counter. But of course, this pattern can also be used in all kinds of components that are actually more useful, for example modal windows, pagination, tables, and so on.
 
 So basically, the way we implement this is that we create a parent component, and then a few different child components that really belong to the parent, and that really only make sense when used together with the parent component.
+
+---
+
+#### 🚩 React Portal <a name="64"></a>
+
+`React portal` is a feature that essentially allows us to render an element outside of the parent component's DOM structure while still keeping the element in the original position of the component tree. In other words, with a portal we can render a component in any place that we want inside the DOM tree but still leave the component at the same place in the React component tree. So then things like props keep working normally. This is great and generally used for all elements that we want to stay on top of other elements (modal windows, tool tips, menus and so on).
+
+Why do we even need to use this portal? Well, the main reason why a portal becomes necessary is in order to avoid conflicts with the CSS property overflow set to hidden. So many times we build a component like a modal and it works just fine, but then some other developer will reuse it somewhere else and that somewhere else might be a place where the modal will get cut off by a overflow hidden set on the parent. So this is basically all about reusability and making sure that the component will never be cut offcby an overflow property set to hidden on some parent element. In order to avoid this kind of situation we simply render the modal completely outside of the rest of the DOM.
+
+Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
+
+```javascript
+// Instead of just returning this JSX we return the results of calling createPortal. And then as the second argument, a DOM note, where we want to render this JSX. Let's just do this in the document body.
+
+function Modal({ children, onClose }) {
+  return createPortal(
+    <Overlay>
+      <StyledModal>
+        <Button onClick={onClose}>
+          <HiXMark />
+        </Button>
+        <div>{children}</div>
+      </StyledModal>
+    </Overlay>,
+    document.body
+  );
+}
+```
 
 ---
 
