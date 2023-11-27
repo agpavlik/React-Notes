@@ -69,7 +69,9 @@
 - [React Query](#58)
 - [React Hook Form](#59)
 - [Advanced React Patterns](#60)
-  - [The Render Props Pattern](#61)
+  - [Render Props Pattern](#61)
+  - [Higher-Order Component](#62)
+  - [Compound Component Pattern](#63)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -4333,6 +4335,24 @@ There are even more patterns than these two, but if you know how to use, and whe
 Example - [Udemy-render-props-pattern](https://github.com/agpavlik/Udemy-render-props-pattern)
 
 The `render prop pattern` is all about passing in a prop called render, which is a function that a component uses to know what it should render and how to do it.
+
+---
+
+#### 🚩 The Higher-Oder Component <a name="62"></a>
+
+Example - [Udemy-render-props-pattern](https://github.com/agpavlik/Udemy-render-props-pattern)
+
+The `Higher Order Component` is simply a component that takes in another component and then returns a new component that is an enhanced version of the initial component. It is useful whan we have a component from a third party library and we cannnot change it.
+
+---
+
+#### 🚩 Compound Component Pattern <a name="63"></a>
+
+Example - [Udemy-compound-component-pattern](https://github.com/agpavlik/Udemy-compound-component-pattern)
+
+The idea of a `Compound Component` is that we can create a set of related components that together achieve a common and useful task, for example, implementing a counter. But of course, this pattern can also be used in all kinds of components that are actually more useful, for example modal windows, pagination, tables, and so on.
+
+So basically, the way we implement this is that we create a parent component, and then a few different child components that really belong to the parent, and that really only make sense when used together with the parent component.
 
 ---
 
