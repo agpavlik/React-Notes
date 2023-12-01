@@ -73,6 +73,8 @@
   - [Higher-Order Component](#62)
   - [Compound Component Pattern](#63)
   - [React Portal](#64)
+- [Features](#65)
+  - [ Client-side filtering / sorting ](#66)
 - [How to plan and build a React Application](#100)
 
 ---
@@ -4381,6 +4383,20 @@ function Modal({ children, onClose }) {
     document.body
   );
 }
+```
+
+---
+
+### 📒 Features <a name="65"></a>
+
+---
+
+#### 🚩 Client-side filtering / sorting <a name="66"></a>
+
+Example - [Udemy-wild-oasis](https://github.com/agpavlik/Udemy-wild-oasis)
+
+```javascript
+// Filter.jsx / CabinTable.jsx / CabinTableOperations.jsx / Cabins.jsx
 ```
 
 ---
